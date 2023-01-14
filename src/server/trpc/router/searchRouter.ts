@@ -2,7 +2,8 @@ import { z } from "zod";
 
 import { router, publicProcedure } from "../trpc";
 
-import type { SpotifyChartsResponse } from "../../../types/popular";
+import type { PopularChartResponse } from "../../../types/popular";
+
 const SPOTIFY_URL = "https://api.spotify.com/v1/search";
 
 const authParameters = {
@@ -57,10 +58,37 @@ export const searchRouter = router({
         "https://charts-spotify-com-service.spotify.com/public/v0/charts"
       )
         .then((response) => response.json())
-        .then((data: SpotifyChartsResponse) => {
+        .then((data: PopularChartResponse) => {
           result = data;
         });
 
+      return result;
+    }),
+  getAlbumInfo: publicProcedure
+    .input(z.object({ albumId: z.string() }))
+    .query(async ({ input }) => {
+      let accessToken;
+      let result: SpotifyApi.AlbumObjectFull = {} as SpotifyApi.AlbumObjectFull;
+      await fetch("https://accounts.spotify.com/api/token", authParameters)
+        .then((response) => response.json())
+        .then((token) => {
+          accessToken = token.access_token;
+        });
+
+      const apiParameters = {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + accessToken,
+        },
+      };
+
+      await fetch(`https://api.spotify.com/v1/albums/${input.albumId as string}`, apiParameters)
+        .then((response) => response.json())
+        .then((data: SpotifyApi.AlbumObjectFull) => {
+          result = data;
+        });
+      console.log(result);
       return result;
     }),
 });

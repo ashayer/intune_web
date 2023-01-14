@@ -1,4 +1,4 @@
-export interface PopularChat {
+export interface PopularChartResponse {
   chartEntryViewResponses?: ChartEntryViewResponsesEntity[] | null;
 }
 export interface ChartEntryViewResponsesEntity {

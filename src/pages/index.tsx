@@ -5,7 +5,7 @@ import type { SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import Router from "next/router";
 import { trpc } from "../utils/trpc";
-import type { PopularChat } from "../types/popular";
+import type { PopularChartResponse } from "../types/popular";
 
 type Inputs = {
   searchText: string;
@@ -16,8 +16,8 @@ const Home: NextPage = () => {
     {} as SpotifyApi.SearchResponse
   );
 
-  const [popularData, setPopularData] = useState<PopularChat>(
-    {} as PopularChat
+  const [popularData, setPopularData] = useState<PopularChartResponse>(
+    {} as PopularChartResponse
   );
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
@@ -27,8 +27,6 @@ const Home: NextPage = () => {
     }
     return null;
   };
-
-  let t: PopularChat;
 
   const [searchText, setSearchText] = useState("");
 
@@ -43,7 +41,7 @@ const Home: NextPage = () => {
   const getPopularQuery = trpc.search.getPopular.useQuery(
     { text: "" },
     {
-      onSuccess: (data: PopularChat) => setPopularData(data),
+      onSuccess: (data: PopularChartResponse) => setPopularData(data),
     }
   );
 
@@ -65,7 +63,15 @@ const Home: NextPage = () => {
               popularData.chartEntryViewResponses[1]?.entries
                 ?.slice(0, 12)
                 .map((entry, index) => (
-                  <button key={index} className="transition-all hover:scale-95">
+                  <button
+                    key={index}
+                    className="transition-all hover:scale-95"
+                    onClick={() =>
+                      Router.push(
+                        `album/${entry.albumMetadata?.albumUri.slice(14)}`
+                      )
+                    }
+                  >
                     <Image
                       title={`${
                         entry.albumMetadata?.albumName
