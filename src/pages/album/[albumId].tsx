@@ -32,8 +32,12 @@ const AlbumDetails: NextPage = () => {
         <p className="text-3xl font-bold">{albumData?.name}</p>
         <p className="text-3xl font-bold">search</p>
       </nav>
-      <main className="px-6 pt-2">
-        <div className="grid grid-cols-2 grid-rows-3 border-b">
+      <div className="fixed bottom-0 left-1/2 mb-4 -translate-x-1/2 rounded-full border-2 bg-slate-200">
+        Open modal
+      </div>
+
+      <main className="px-3 pt-2">
+        <div className="grid grid-cols-3 grid-rows-3 border-b sm:grid-cols-2">
           <div className="col-span-2 row-span-3 mx-auto my-6 text-center sm:col-span-1">
             <Image
               src={albumData?.images[0]?.url || ""}
@@ -44,6 +48,7 @@ const AlbumDetails: NextPage = () => {
             />
             <button className="my-4">Like</button>
           </div>
+
           <div className="my-4 text-center">
             <p className="text-md font-semibold underline underline-offset-4">
               Artist
@@ -90,15 +95,18 @@ const AlbumDetails: NextPage = () => {
         </div>
         <div className="py-6">
           <p>Reviews</p>
-          <div className="flex w-full flex-col">
-            <div className="flex border p-4">
-              <Image
-                src="https://randomuser.me/api/portraits/women/94.jpg"
-                alt="user"
-                height={50}
-                width={50}
-                className="mr-4 h-full rounded-full"
-              />
+          <div className="flex flex-col">
+            <div className="flex py-4">
+              <div className="mr-4 flex flex-col justify-around text-center">
+                <Image
+                  src="https://randomuser.me/api/portraits/women/94.jpg"
+                  alt="user"
+                  height={50}
+                  width={50}
+                  className="rounded-full "
+                />
+                <div className="w-12">Like</div>
+              </div>
               <div className="flex flex-col">
                 <p>Username</p>
                 <p
