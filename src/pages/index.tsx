@@ -49,25 +49,23 @@ const Home: NextPage = () => {
 
   const { register, handleSubmit } = useForm<Inputs>();
 
-  console.log(getPopularQuery.data);
-
   return (
     <main className="mx-auto flex h-screen flex-col items-center ">
       <div className="flex min-h-screen flex-col justify-between border-x border-slate-500">
-        <nav className="flex justify-between border border-slate-500 p-6">
+        <nav className="flex justify-between border-b border-slate-500 p-6">
           <p className="text-3xl font-extrabold">Intune</p>
           <p className="text-3xl">Search</p>
         </nav>
         <div>
-          <p className="px-6 pb-6 text-3xl font-bold">
+          <p className="p-6 font-bold md:text-3xl">
             most popular albums this week
           </p>
-          <div className="grid grid-cols-4 gap-6 px-6 md:grid-cols-6">
+          <div className="grid grid-cols-2 gap-6 px-6 md:grid-cols-4 2xl:grid-cols-6">
             {popularData.chartEntryViewResponses &&
               popularData.chartEntryViewResponses[1]?.entries
                 ?.slice(0, 12)
                 .map((entry, index) => (
-                  <div key={index}>
+                  <button key={index} className="transition-all hover:scale-95">
                     <Image
                       title={`${
                         entry.albumMetadata?.albumName
@@ -82,20 +80,20 @@ const Home: NextPage = () => {
                       height={208}
                       width={208}
                     />
-                  </div>
+                  </button>
                 ))}
           </div>
         </div>
         <div className="mb-10">
-          <p className="p-6 text-right text-3xl font-bold">
+          <p className="p-6 text-right font-bold md:text-3xl">
             most popular artists this week
           </p>
-          <div className="grid grid-cols-4 gap-6 px-6 md:grid-cols-6">
+          <div className="grid grid-cols-2 gap-6 px-6 md:grid-cols-4 2xl:grid-cols-6">
             {popularData.chartEntryViewResponses &&
               popularData.chartEntryViewResponses[2]?.entries
                 ?.slice(0, 12)
                 .map((entry, index) => (
-                  <div key={index}>
+                  <button key={index} className="transition-all hover:scale-95">
                     <Image
                       className="aspect-square rounded-xl object-cover"
                       title={entry.artistMetadata?.artistName}
@@ -104,7 +102,7 @@ const Home: NextPage = () => {
                       height={208}
                       width={208}
                     />
-                  </div>
+                  </button>
                 ))}
           </div>
         </div>
