@@ -5,6 +5,8 @@ import type { SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import Router from "next/router";
 import { trpc } from "../utils/trpc";
+import type { PopularChat } from "../types/popular";
+
 type Inputs = {
   searchText: string;
 };
@@ -14,17 +16,23 @@ const Home: NextPage = () => {
     {} as SpotifyApi.SearchResponse
   );
 
+  const [popularData, setPopularData] = useState<PopularChat>(
+    {} as PopularChat
+  );
+
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     if (data.searchText.trim() !== "") {
-      setSearchTest(data.searchText);
-      test.refetch();
+      setSearchText(data.searchText);
+      searchTextQuery.refetch();
     }
     return null;
   };
 
-  const [searchText, setSearchTest] = useState("");
+  let t: PopularChat;
 
-  const test = trpc.example.test.useQuery(
+  const [searchText, setSearchText] = useState("");
+
+  const searchTextQuery = trpc.search.searchWithText.useQuery(
     { text: searchText },
     {
       onSuccess: (data) => setTestAlbumData(data),
@@ -32,53 +40,82 @@ const Home: NextPage = () => {
     }
   );
 
+  const getPopularQuery = trpc.search.getPopular.useQuery(
+    { text: "" },
+    {
+      onSuccess: (data: PopularChat) => setPopularData(data),
+    }
+  );
+
   const { register, handleSubmit } = useForm<Inputs>();
 
+  console.log(getPopularQuery.data);
+
   return (
-    <>
-      <main className="flex flex-col items-center bg-slate-600">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <input
-            defaultValue=""
-            placeholder="Search"
-            {...register("searchText")}
-            className="input w-full max-w-xs"
-          />
-        </form>
+    <main className="mx-auto flex h-screen flex-col items-center ">
+      <div className="flex min-h-screen flex-col justify-between border-x border-slate-500">
+        <nav className="flex justify-between border border-slate-500 p-6">
+          <p className="text-3xl font-extrabold">Intune</p>
+          <p className="text-3xl">Search</p>
+        </nav>
         <div>
-          {test.isRefetching && test.isFetching && !test.isSuccess && (
-            <progress className="progress"></progress>
-          )}
-          {testAlbumData.albums?.items && (
-            <div className="grid grid-cols-8 gap-5">
-              {testAlbumData.albums.items.map(
-                (data, index) =>
-                  data.images.length > 0 && (
-                    <div
-                      key={index}
-                      className="border-2"
-                      onClick={() => Router.push(`/album/${data.id}`)}
-                    >
-                      <p>{data.id}</p>
-                      <Image
-                        src={data.images[1]?.url as string}
-                        alt="album cover"
-                        height={200}
-                        width={200}
-                      />
-                      <p>{data.name}</p>
-                    </div>
-                  )
-              )}
-            </div>
-          )}
+          <p className="px-6 pb-6 text-3xl font-bold">
+            most popular albums this week
+          </p>
+          <div className="grid grid-cols-4 gap-6 px-6 md:grid-cols-6">
+            {popularData.chartEntryViewResponses &&
+              popularData.chartEntryViewResponses[1]?.entries
+                ?.slice(0, 12)
+                .map((entry, index) => (
+                  <div key={index}>
+                    <Image
+                      title={`${
+                        entry.albumMetadata?.albumName
+                      } by ${entry.albumMetadata?.artists
+                        ?.map(function (artistinfo) {
+                          return artistinfo.name;
+                        })
+                        .join(", ")}`}
+                      src={entry.albumMetadata?.displayImageUri || ""}
+                      alt="album cover"
+                      className="rounded-xl"
+                      height={208}
+                      width={208}
+                    />
+                  </div>
+                ))}
+          </div>
         </div>
-      </main>
-    </>
+        <div className="mb-10">
+          <p className="p-6 text-right text-3xl font-bold">
+            most popular artists this week
+          </p>
+          <div className="grid grid-cols-4 gap-6 px-6 md:grid-cols-6">
+            {popularData.chartEntryViewResponses &&
+              popularData.chartEntryViewResponses[2]?.entries
+                ?.slice(0, 12)
+                .map((entry, index) => (
+                  <div key={index}>
+                    <Image
+                      className="aspect-square rounded-xl object-cover"
+                      title={entry.artistMetadata?.artistName}
+                      src={entry.artistMetadata?.displayImageUri || ""}
+                      alt="artist cover"
+                      height={208}
+                      width={208}
+                    />
+                  </div>
+                ))}
+          </div>
+        </div>
+      </div>
+    </main>
   );
 };
 
 export default Home;
+
+//https://charts-spotify-com-service.spotify.com/public/v0/charts
 
 // const searchThing = async (input: string) => {
 //   const apiParameters = {
@@ -120,3 +157,40 @@ export default Home;
 //       setAccessToken(token.access_token);
 //     });
 // }, []);
+
+/* <form onSubmit={handleSubmit(onSubmit)}>
+          <input
+            defaultValue=""
+            placeholder="Search"
+            {...register("searchText")}
+            className="input w-full max-w-xs"
+          />
+        </form>
+        <div>
+          {test.isRefetching && test.isFetching && !test.isSuccess && (
+            <progress className="progress"></progress>
+          )}
+          {testAlbumData.albums?.items && (
+            <div className="grid grid-cols-8 gap-5">
+              {testAlbumData.albums.items.map(
+                (data, index) =>
+                  data.images.length > 0 && (
+                    <div
+                      key={index}
+                      className="border-2"
+                      onClick={() => Router.push(`/album/${data.id}`)}
+                    >
+                      <p>{data.id}</p>
+                      <Image
+                        src={data.images[1]?.url as string}
+                        alt="album cover"
+                        height={200}
+                        width={200}
+                      />
+                      <p>{data.name}</p>
+                    </div>
+                  )
+              )}
+            </div>
+          )}
+        </div> */

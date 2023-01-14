@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import { router, publicProcedure } from "../trpc";
 
+import type { SpotifyChartsResponse } from "../../../types/popular";
 const SPOTIFY_URL = "https://api.spotify.com/v1/search";
 
 const authParameters = {
@@ -16,8 +17,8 @@ const authParameters = {
     process.env.SPOTIFY_SECRET,
 };
 
-export const exampleRouter = router({
-  test: publicProcedure
+export const searchRouter = router({
+  searchWithText: publicProcedure
     .input(z.object({ text: z.string() }))
     .query(async ({ input }) => {
       let accessToken;
@@ -42,6 +43,21 @@ export const exampleRouter = router({
       )
         .then((response) => response.json())
         .then((data: SpotifyApi.SearchResponse) => {
+          result = data;
+        });
+
+      return result;
+    }),
+  getPopular: publicProcedure
+    .input(z.object({ text: z.string() }))
+    .query(async () => {
+      let result = null;
+
+      await fetch(
+        "https://charts-spotify-com-service.spotify.com/public/v0/charts"
+      )
+        .then((response) => response.json())
+        .then((data: SpotifyChartsResponse) => {
           result = data;
         });
 
