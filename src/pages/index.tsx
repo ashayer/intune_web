@@ -48,8 +48,8 @@ const Home: NextPage = () => {
   const { register, handleSubmit } = useForm<Inputs>();
 
   return (
-    <main className="mx-auto flex h-screen flex-col items-center ">
-      <div className="flex min-h-screen flex-col justify-between border-x border-slate-500">
+    <main className="mx-auto flex min-h-screen flex-col items-center lg:w-1/2 ">
+      <div className="flex min-h-screen flex-col justify-between border-slate-500 sm:border-x">
         <nav className="flex justify-between border-b border-slate-500 p-6">
           <p className="text-3xl font-extrabold">Intune</p>
           <p className="text-3xl">Search</p>

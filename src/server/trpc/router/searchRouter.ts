@@ -64,7 +64,7 @@ export const searchRouter = router({
 
       return result;
     }),
-  getAlbumInfo: publicProcedure
+  getAlbumInfoById: publicProcedure
     .input(z.object({ albumId: z.string() }))
     .query(async ({ input }) => {
       let accessToken;
@@ -83,12 +83,39 @@ export const searchRouter = router({
         },
       };
 
-      await fetch(`https://api.spotify.com/v1/albums/${input.albumId as string}`, apiParameters)
+      await fetch(
+        `https://api.spotify.com/v1/albums/${input.albumId as string}`,
+        apiParameters
+      )
         .then((response) => response.json())
         .then((data: SpotifyApi.AlbumObjectFull) => {
           result = data;
         });
-      console.log(result);
       return result;
     }),
+  getNewReleases: publicProcedure.query(async ({ input }) => {
+    let accessToken;
+    let result: SpotifyApi.AlbumObjectFull[] = [];
+    await fetch("https://accounts.spotify.com/api/token", authParameters)
+      .then((response) => response.json())
+      .then((token) => {
+        accessToken = token.access_token;
+      });
+
+    const apiParameters = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + accessToken,
+      },
+    };
+
+    await fetch(`https://api.spotify.com/v1/browse/new-releases`, apiParameters)
+      .then((response) => response.json())
+      .then((data: SpotifyApi.AlbumObjectFull[]) => {
+        result = data;
+      });
+    console.log(result);
+    return result;
+  }),
 });
