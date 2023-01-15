@@ -6,19 +6,6 @@ export const albumRouter = router({
   likeAlbum: publicProcedure
     .input(z.object({ userId: z.string(), albumId: z.string() }))
     .query(async ({ input, ctx }) => {
-      await ctx.prisma.userAlbumLikes.create({
-        data: {
-          albumId: input.albumId,
-          userId: input.userId,
-          isLike: true,
-        },
-      });
-
-      return null;
-    }),
-  dislikeAlbum: publicProcedure
-    .input(z.object({ userId: z.string(), albumId: z.string() }))
-    .query(async ({ input, ctx }) => {
       const userLike = await ctx.prisma.userAlbumLikes.findFirst({
         where: {
           AND: [
@@ -38,6 +25,14 @@ export const albumRouter = router({
         await ctx.prisma.userAlbumLikes.delete({
           where: {
             id: userLike.id,
+          },
+        });
+      } else {
+        await ctx.prisma.userAlbumLikes.create({
+          data: {
+            albumId: input.albumId,
+            userId: input.userId,
+            isLike: true,
           },
         });
       }
@@ -64,7 +59,7 @@ export const albumRouter = router({
 
       if (userLike !== null) return userLike.isLike;
 
-      return null;
+      return false;
     }),
   createAlbumRating: publicProcedure
     .input(
@@ -110,11 +105,27 @@ export const albumRouter = router({
       z.object({ userId: z.string(), albumId: z.string(), rating: z.number() })
     )
     .query(async ({ input, ctx }) => {
-      await ctx.prisma.userAlbumRatings.create({
-        data: {
-          ...input,
+      const userRating = await ctx.prisma.userAlbumRatings.findFirst({
+        where: {
+          AND: [{ userId: input.userId }, { albumId: input.albumId }],
+        },
+        select: {
+          id: true,
+          albumId: true,
+          rating: true,
         },
       });
+
+      if (userRating !== null) {
+        await ctx.prisma.userAlbumRatings.update({
+          where: {
+            id: userRating.id,
+          },
+          data: {
+            rating: input.rating,
+          },
+        });
+      }
 
       return null;
     }),

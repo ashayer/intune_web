@@ -63,10 +63,10 @@ model VerificationToken {
 
 model AlbumReviews {
   id          String        @unique @default(cuid())
-  albumId     Int
+  albumId     String
   userId      String
   username    String
-  Text        String        @db.VarChar(4000)
+  text        String        @db.VarChar(4000)
   createdAt   DateTime      @default(now())
   likes       Int           @default(0)
   ReviewLikes ReviewLikes[]
