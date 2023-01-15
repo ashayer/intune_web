@@ -1,15 +1,11 @@
 import { type NextPage } from "next";
-import { useEffect, useState } from "react";
-import router, { useRouter } from "next/router";
+import { useState } from "react";
+import { useRouter } from "next/router";
 import { trpc } from "../../utils/trpc";
-import Image from "next/image";
 import AlbumStatsGrid from "../../components/AlbumStatsGrid";
 import AlbumInfoGrid from "../../components/AlbumInfoGrid";
 import AlbumReviewsGrid from "../../components/AlbumReviewsGrid";
 
-const SPOTIFY_CLIENT_ID = "08cde527b9274e67ae6712b3cee86db9";
-const SPOTIFY_SECRET = "058bd77f1e264452a0e97920a3a50757";
-const SPOTIFY_URL = "https://api.spotify.com/v1/albums/";
 
 const AlbumDetails: NextPage = () => {
   const [albumData, setAlbumData] = useState<SpotifyApi.AlbumObjectFull>();
@@ -26,11 +22,9 @@ const AlbumDetails: NextPage = () => {
     }
   );
 
-  console.log(albumInfoQuery.data);
-
   return (
     <div className="mx-auto min-h-screen border-x border-slate-600 lg:w-1/2">
-      <nav className="flex justify-between p-2">
+      <nav className="sticky top-0 flex justify-between bg-slate-900 p-2">
         <p className="text-3xl font-bold">back</p>
         <p className="text-3xl font-bold">{albumData?.name}</p>
         <p className="text-3xl font-bold">search</p>
