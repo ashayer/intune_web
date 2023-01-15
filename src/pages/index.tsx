@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import Router from "next/router";
 import { trpc } from "../utils/trpc";
 import type { PopularChartResponse } from "../types/popular";
+import Navbar from "../components/Navbar";
 
 type Inputs = {
   searchText: string;
@@ -49,15 +50,13 @@ const Home: NextPage = () => {
 
   return (
     <main className="mx-auto flex min-h-screen flex-col items-center lg:w-1/2">
-      <div className="flex min-h-screen flex-col justify-between border-slate-500 sm:border-x">
-        <nav className="flex justify-between border-b border-slate-500 p-6">
-          <p className="text-3xl font-extrabold">Intune</p>
-          <p className="text-3xl">Search</p>
-        </nav>
+      <div className="flex min-h-screen flex-col justify-start border-slate-500 sm:border-x">
+        <Navbar />
         <div>
-          <p className="p-6 font-bold md:text-3xl">
-            most popular albums this week
+          <p className=" p-6 text-center font-bold md:text-4xl">
+            popular this week
           </p>
+          <p className="p-6 font-bold md:text-3xl">albums</p>
           <div className="grid grid-cols-2 gap-6 px-6 md:grid-cols-4 2xl:grid-cols-6">
             {popularData.chartEntryViewResponses &&
               popularData.chartEntryViewResponses[1]?.entries
@@ -91,9 +90,7 @@ const Home: NextPage = () => {
           </div>
         </div>
         <div className="mb-10">
-          <p className="p-6 text-right font-bold md:text-3xl">
-            most popular artists this week
-          </p>
+          <p className="p-6 text-right font-bold md:text-3xl">artists</p>
           <div className="grid grid-cols-2 gap-6 px-6 md:grid-cols-4 2xl:grid-cols-6">
             {popularData.chartEntryViewResponses &&
               popularData.chartEntryViewResponses[2]?.entries
