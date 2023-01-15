@@ -26,7 +26,7 @@ const AlbumDetails: NextPage = () => {
   console.log(albumInfoQuery.data);
 
   return (
-    <div className="mx-auto min-h-screen border-x lg:w-1/2">
+    <div className="mx-auto min-h-screen border-x border-slate-600 lg:w-1/2">
       <nav className="flex justify-between p-2">
         <p className="text-3xl font-bold">back</p>
         <p className="text-3xl font-bold">{albumData?.name}</p>
@@ -36,8 +36,8 @@ const AlbumDetails: NextPage = () => {
         Open modal
       </div>
 
-      <main className="px-3 pt-2">
-        <div className="grid grid-cols-3 grid-rows-3 border-b sm:grid-cols-2">
+      <main className="border-slate-600 px-3 pt-2">
+        <div className="grid grid-cols-3 grid-rows-3 border-b border-slate-600 sm:grid-cols-2">
           <div className="col-span-2 row-span-3 mx-auto my-6 text-center sm:col-span-1">
             <Image
               src={albumData?.images[0]?.url || ""}
@@ -76,7 +76,7 @@ const AlbumDetails: NextPage = () => {
             <p className="text-2xl font-bold">N/A</p>
           </div>
         </div>
-        <div className="border-b py-6 text-center">
+        <div className="border-b  border-slate-600 py-6 text-center">
           <p>Rating stars</p>
           <div className="flex w-full justify-around">
             <div>
@@ -94,7 +94,7 @@ const AlbumDetails: NextPage = () => {
           </div>
         </div>
         <div className="py-6">
-          <p>Reviews</p>
+          <p className="text-center">Reviews</p>
           <div className="flex flex-col">
             <div className="flex py-4">
               <div className="mr-4 flex flex-col justify-around text-center">

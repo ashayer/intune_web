@@ -11,12 +11,6 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Example {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
 // Necessary for Next auth
 model Account {
   id                String  @id @default(cuid())
@@ -45,13 +39,18 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
+  id               String             @id @default(cuid())
+  name             String?
+  email            String?            @unique
+  emailVerified    DateTime?
+  image            String?
+  accounts         Account[]
+  sessions         Session[]
+  UserAlbumLikes   UserAlbumLikes[]
+  UserAlbumRatings UserAlbumRatings[]
+  FollowersList    FollowersList[]
+  ReviewLikes      ReviewLikes[]
+  AlbumReviews     AlbumReviews[]
 }
 
 model VerificationToken {
@@ -71,6 +70,9 @@ model AlbumReviews {
   createdAt   DateTime      @default(now())
   likes       Int           @default(0)
   ReviewLikes ReviewLikes[]
+  user        User          @relation(fields: [userId], references: [id])
+
+  @@index([userId])
 }
 
 model ReviewLikes {
@@ -79,8 +81,10 @@ model ReviewLikes {
   userId      String
   isLike      Boolean
   albumReview AlbumReviews @relation(fields: [albumId], references: [id], onDelete: Cascade)
+  user        User         @relation(fields: [userId], references: [id])
 
   @@index([albumId])
+  @@index([userId])
 }
 
 model FollowersList {
@@ -90,6 +94,9 @@ model FollowersList {
   isFollowing     Boolean
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+  user            User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
 }
 
 model UserAlbumLikes {
@@ -99,6 +106,9 @@ model UserAlbumLikes {
   isLike    Boolean
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
 }
 
 model UserAlbumRatings {
@@ -108,4 +118,7 @@ model UserAlbumRatings {
   rating    Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
 }
