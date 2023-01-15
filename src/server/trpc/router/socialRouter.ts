@@ -87,6 +87,9 @@ export const albumRouter = router({
             },
           },
         },
+        orderBy: {
+          createdAt: "desc",
+        },
       });
 
       return allReviews;
