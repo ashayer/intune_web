@@ -1,6 +1,7 @@
 import type { EntriesEntity } from "../types/popular";
 import Image from "next/image";
 import Router from "next/router";
+import type { RefObject } from "react";
 const PopularGridCard = ({
   entry,
   type,
