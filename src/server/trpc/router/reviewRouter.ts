@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { router, publicProcedure } from "../trpc";
 
-export const albumRouter = router({
+export const reviewRouter = router({
   createAlbumReview: publicProcedure
     .input(
       z.object({

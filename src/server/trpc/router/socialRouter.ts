@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { router, publicProcedure } from "../trpc";
 
-export const albumRouter = router({
+export const socialRouter = router({
   followUser: publicProcedure
     .input(
       z.object({

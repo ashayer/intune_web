@@ -4,8 +4,15 @@ import { router, publicProcedure } from "../trpc";
 
 export const albumRouter = router({
   likeAlbum: publicProcedure
-    .input(z.object({ userId: z.string(), albumId: z.string() }))
-    .query(async ({ input, ctx }) => {
+    .input(
+      z.object({
+        userId: z.string(),
+        albumId: z.string(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      if (!input.userId) throw new Error("Not signed in");
+
       const userLike = await ctx.prisma.userAlbumLikes.findFirst({
         where: {
           AND: [
