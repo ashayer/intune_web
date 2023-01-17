@@ -4,7 +4,7 @@ import { HiOutlineHeart } from "react-icons/hi";
 const AlbumReview = () => {
   return (
     <div className="flex py-4">
-      <div className="mx-2 flex flex-col items-center justify-around">
+      <div className="mx-2 flex flex-col items-center gap-y-2">
         <button className="w-12">
           <Image
             src="https://randomuser.me/api/portraits/women/94.jpg"
