@@ -42,7 +42,6 @@ const Home: NextPage = () => {
   return (
     <>
       <main className="mx-auto flex flex-col items-center lg:w-1/2">
-        <Navbar />
         {getPopularQuery.isLoading ? (
           <div className="h-screen">
             <div className="h-1/4 animate-spin border">.</div>

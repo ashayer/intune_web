@@ -1,21 +1,30 @@
 import Image from "next/image";
+import { HiOutlineHeart } from "react-icons/hi";
+
 const AlbumReview = () => {
   return (
     <div className="flex py-4">
-      <div className="mr-4 flex flex-col justify-around text-center">
-        <Image
-          src="https://randomuser.me/api/portraits/women/94.jpg"
-          alt="user"
-          height={50}
-          width={50}
-          className="rounded-full "
-        />
-        <div className="w-12">Like</div>
+      <div className="mx-2 flex flex-col items-center justify-around">
+        <button className="rounded-full">
+          <Image
+            src="https://randomuser.me/api/portraits/women/94.jpg"
+            alt="user"
+            height={25}
+            width={25}
+            className="w-10 rounded-full"
+          />
+        </button>
+        <button className="btn-xs btn">
+          <HiOutlineHeart className="h-4 w-4 text-red-500" />
+        </button>
       </div>
       <div className="flex flex-col">
-        <p className="font-semibold text-slate-300">Username</p>
+        <div className="flex justify-between">
+          <p className="text-xs font-semibold text-slate-300">Username</p>
+          <p className="text-xs">400 likes</p>
+        </div>
         <p
-          className=" overflow-hidden text-ellipsis text-slate-400"
+          className=" overflow-hidden text-ellipsis text-sm text-slate-400"
           style={{
             display: "-webkit-box",
             WebkitLineClamp: 3,

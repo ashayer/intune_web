@@ -1,7 +1,12 @@
 import { useSession, signIn } from "next-auth/react";
 import Image from "next/image";
 import { useState } from "react";
-import { HiOutlineHeart, HiOutlineX } from "react-icons/hi";
+import {
+  HiOutlineHeart,
+  HiHeart,
+  HiStar,
+  HiDocumentText,
+} from "react-icons/hi";
 import { trpc } from "../utils/trpc";
 import { NoUserModal } from "./NoUserModal";
 
@@ -21,59 +26,148 @@ const AlbumInfoGrid = ({
   });
 
   return (
-    <>
-      <NoUserModal showModal={showModal} setShowModal={setShowModal} />
-      <div className="grid grid-cols-3 grid-rows-3 border-b border-slate-600 sm:grid-cols-2">
-        <div className="col-span-2 row-span-3 mx-auto my-6 text-center sm:col-span-1">
-          <Image
-            src={albumData?.images[0]?.url || ""}
-            alt="album cover"
-            className="rounded-xl"
-            height={300}
-            width={300}
+    <div className="flex-[0.25] ">
+      <div className=" sticky top-0 flex flex-col items-center gap-y-4 text-center">
+        <Image
+          src={albumData?.images[0]?.url || ""}
+          alt="album cover"
+          className="rounded-xl"
+          height={240}
+          width={240}
+        />
+        <button
+          onClick={() => {
+            likeAlbumQuery.mutate({
+              userId: session?.user?.id || "",
+              albumId: albumData?.id as string,
+            });
+          }}
+        >
+          <HiOutlineHeart className="h-8 w-8 text-red-500" />
+        </button>
+
+        <div className="rating rating-md">
+          <input
+            type="radio"
+            name="rating-8"
+            className="mask mask-star-2 bg-orange-400"
           />
-          <button
-            className="btn-ghost btn-circle btn my-4"
-            onClick={() => {
-              likeAlbumQuery.mutate({
-                userId: session?.user?.id || "",
-                albumId: albumData?.id as string,
-              });
-            }}
-          >
-            <HiOutlineHeart className=" h-8 w-8 text-red-500" />
-          </button>
+          <input
+            type="radio"
+            name="rating-8"
+            className="mask mask-star-2 bg-orange-400"
+            checked
+          />
+          <input
+            type="radio"
+            name="rating-8"
+            className="mask mask-star-2 bg-orange-400"
+          />
+          <input
+            type="radio"
+            name="rating-8"
+            className="mask mask-star-2 bg-orange-400"
+          />
+          <input
+            type="radio"
+            name="rating-8"
+            className="mask mask-star-2 bg-orange-400"
+          />
         </div>
 
-        <div className="my-4 text-center">
+        <div className="w-full border-b border-slate-600">
           <p className="text-md font-semibold underline underline-offset-4">
             Artist
           </p>
-          <p className="text-2xl font-bold">
+          <p className="mb-4 text-2xl font-bold">
             {albumData?.artists
               ?.map(function (artistinfo) {
                 return artistinfo.name;
               })
               .join(", ")}
           </p>
-        </div>
-        <div className="my-4 text-center">
+
           <p className="text-md font-semibold underline underline-offset-4">
             Released
           </p>
-          <p className="text-2xl font-bold">
+          <p className="mb-4 text-2xl font-bold">
             {albumData?.release_date.slice(0, 4)}
           </p>
-        </div>
-        <div className="my-4 text-center">
+
           <p className="text-md font-semibold underline underline-offset-4">
             Rating
           </p>
-          <p className="text-2xl font-bold">N/A</p>
+          <p className="mb-4 text-2xl font-bold">N/A</p>
         </div>
+        <div className="flex w-full justify-evenly">
+          <div>
+            <HiHeart className="h-8 w-8 text-red-500" />
+            <p>152</p>
+          </div>
+          <div>
+            <HiStar className="h-8 w-8 text-yellow-500" />
+            <p>12</p>
+          </div>
+          <div>
+            <HiDocumentText className="h-8 w-8 text-red-500" />
+            <p>447</p>
+          </div>
+        </div>
+        <NoUserModal showModal={showModal} setShowModal={setShowModal} />
       </div>
-    </>
+    </div>
   );
 };
 
 export default AlbumInfoGrid;
+
+{
+  /* <div className="grid grid-cols-3 grid-rows-3 border-b border-slate-600 sm:grid-cols-2">
+<div className="col-span-2 row-span-3 mx-auto my-6 text-center sm:col-span-1">
+  <Image
+    src={albumData?.images[0]?.url || ""}
+    alt="album cover"
+    className="rounded-xl"
+    height={240}
+    width={240}
+  />
+  <button
+    onClick={() => {
+      likeAlbumQuery.mutate({
+        userId: session?.user?.id || "",
+        albumId: albumData?.id as string,
+      });
+    }}
+  >
+    <HiOutlineHeart className="h-8 w-8 text-red-500" />
+  </button>
+</div>
+
+<div className="my-4 text-center">
+  <p className="text-md font-semibold underline underline-offset-4">
+    Artist
+  </p>
+  <p className="text-2xl font-bold">
+    {albumData?.artists
+      ?.map(function (artistinfo) {
+        return artistinfo.name;
+      })
+      .join(", ")}
+  </p>
+</div>
+<div className="my-4 text-center">
+  <p className="text-md font-semibold underline underline-offset-4">
+    Released
+  </p>
+  <p className="text-2xl font-bold">
+    {albumData?.release_date.slice(0, 4)}
+  </p>
+</div>
+<div className="my-4 text-center">
+  <p className="text-md font-semibold underline underline-offset-4">
+    Rating
+  </p>
+  <p className="text-2xl font-bold">N/A</p>
+</div>
+</div> */
+}
