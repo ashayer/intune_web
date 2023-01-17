@@ -8,6 +8,7 @@ import AlbumInfoGrid from "../../components/AlbumInfoGrid";
 import AlbumReviewsGrid from "../../components/AlbumReviewsGrid";
 import { HiArrowCircleLeft, HiSearch, HiOutlineX } from "react-icons/hi";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
+import Image from "next/image";
 
 const AlbumDetails: NextPage = () => {
   const [albumData, setAlbumData] = useState<SpotifyApi.AlbumObjectFull>();
@@ -30,7 +31,7 @@ const AlbumDetails: NextPage = () => {
   return (
     <div className="mx-auto min-h-screen border-x border-slate-600 lg:w-1/2">
       <nav className="sticky top-0 flex items-center justify-between bg-slate-900 p-2">
-        <button className="btn-ghost btn" onClick={() => Router.back()}>
+        <button className="pl-2" onClick={() => Router.back()}>
           <HiArrowCircleLeft className="h-6 w-6" />
         </button>
         <p
@@ -47,18 +48,18 @@ const AlbumDetails: NextPage = () => {
             {showSearch && (
               <div className="flex items-center justify-between gap-x-2">
                 <button
-                  className="btn-ghost no-animation btn"
+                  className="btn-ghost no-animation btn-sm btn"
                   onClick={() => {
                     setShowSearch((prev) => !prev);
                   }}
                 >
                   <HiOutlineX />
                 </button>
-                <input type="text" name="" id="" className="input" />
+                <input type="text" name="" id="" className="input input-sm" />
               </div>
             )}
             <button
-              className="btn-ghost btn"
+              className="btn-ghost btn-sm btn"
               onClick={() => {
                 if (!showSearch) {
                   setShowSearch((prev) => !prev);
@@ -71,9 +72,17 @@ const AlbumDetails: NextPage = () => {
             </button>
           </div>
           <div className="dropdown-end dropdown">
-            <label tabIndex={0} className="btn-ghost rounded-btn btn">
-              Dropdown
-            </label>
+            <div className="avatar">
+              <button className="m-2 rounded-full ring ring-white">
+                <Image
+                  src="https://randomuser.me/api/portraits/women/94.jpg"
+                  alt="user"
+                  height={25}
+                  width={25}
+                  className="rounded-full "
+                />
+              </button>
+            </div>
             <ul
               tabIndex={0}
               className="dropdown-content menu rounded-box mt-4 w-52 bg-base-100 p-2 shadow"

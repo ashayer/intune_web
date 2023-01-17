@@ -14,7 +14,6 @@ const AlbumInfoGrid = ({
 
   const [showModal, setShowModal] = useState(false);
 
-
   const likeAlbumQuery = trpc.album.likeAlbum.useMutation({
     onError: () => {
       setShowModal(true);
@@ -23,10 +22,7 @@ const AlbumInfoGrid = ({
 
   return (
     <>
-      <NoUserModal
-        showModal={showModal}
-        setShowModal={setShowModal}
-      />
+      <NoUserModal showModal={showModal} setShowModal={setShowModal} />
       <div className="grid grid-cols-3 grid-rows-3 border-b border-slate-600 sm:grid-cols-2">
         <div className="col-span-2 row-span-3 mx-auto my-6 text-center sm:col-span-1">
           <Image
@@ -37,7 +33,7 @@ const AlbumInfoGrid = ({
             width={300}
           />
           <button
-            className="btn-circle btn my-4 bg-red-900"
+            className="btn-ghost btn-circle btn my-4"
             onClick={() => {
               likeAlbumQuery.mutate({
                 userId: session?.user?.id || "",

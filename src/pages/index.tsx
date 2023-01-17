@@ -44,9 +44,11 @@ const Home: NextPage = () => {
       <main className="mx-auto flex flex-col items-center lg:w-1/2">
         <Navbar />
         {getPopularQuery.isLoading ? (
-          <div className="">Loading...</div>
+          <div className="h-screen">
+            <div className="h-1/4 animate-spin border">.</div>
+          </div>
         ) : (
-          <div className="flex min-h-screen w-full flex-col justify-start pb-4">
+          <div className="flex min-h-screen w-full flex-col justify-start pb-6">
             <div>
               <p className="p-6 text-center text-4xl font-bold">
                 popular this week
