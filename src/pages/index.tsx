@@ -1,18 +1,18 @@
 import { type NextPage } from "next";
-import { LegacyRef, useState } from "react";
+import type { LegacyRef } from "react";
+import { useState } from "react";
 // import type { SubmitHandler } from "react-hook-form";
 // import { useForm } from "react-hook-form";
 import { trpc } from "../utils/trpc";
 import type { PopularChartResponse } from "../types/popular";
 import Navbar from "../components/Navbar";
 import PopularGrid from "../components/PopularGrid";
-import { useAutoAnimate } from "@formkit/auto-animate/react";
+import Footer from "../components/Footer";
 
 const Home: NextPage = () => {
   const [popularData, setPopularData] = useState<PopularChartResponse>(
     {} as PopularChartResponse
   );
-  const [parent, enableAnimations] = useAutoAnimate(/* optional config */);
 
   // const onSubmit: SubmitHandler<Inputs> = (data) => {
   //   if (data.searchText.trim() !== "") {
@@ -40,22 +40,25 @@ const Home: NextPage = () => {
   );
 
   return (
-    <main className="mx-auto flex flex-col items-center lg:w-1/2">
-      <Navbar />
-      {getPopularQuery.isLoading && getPopularQuery.isSuccess ? (
-        <div className="animate-spin"></div>
-      ) : (
-        <div className="flex w-full flex-col justify-start border-slate-500 pb-4">
-          <div ref={parent as LegacyRef<HTMLDivElement> | undefined}>
-            <p className="p-6 text-center text-4xl font-bold">
-              popular this week
-            </p>
-            <PopularGrid popularData={popularData} type="album" />
-            <PopularGrid popularData={popularData} type="artist" />
+    <>
+      <main className="mx-auto flex flex-col items-center lg:w-1/2">
+        <Navbar />
+        {getPopularQuery.isLoading ? (
+          <div className="">Loading...</div>
+        ) : (
+          <div className="flex min-h-screen w-full flex-col justify-start pb-4">
+            <div>
+              <p className="p-6 text-center text-4xl font-bold">
+                popular this week
+              </p>
+              <PopularGrid popularData={popularData} type="album" />
+              <PopularGrid popularData={popularData} type="artist" />
+            </div>
           </div>
-        </div>
-      )}
-    </main>
+        )}
+      </main>
+      <Footer />
+    </>
   );
 };
 
