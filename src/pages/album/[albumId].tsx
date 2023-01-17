@@ -24,7 +24,13 @@ const AlbumDetails: NextPage = () => {
     <div className="mx-auto min-h-screen max-w-7xl">
       <main className="flex flex-col px-4 md:flex-row">
         <div className="flex-[0.25]">
-          <AlbumInfoGrid albumData={albumData} />
+          {albumInfoQuery.isLoading && !albumInfoQuery.isSuccess ? (
+            <div className="flex h-screen items-center justify-center">
+              <div className="w-6 animate-spin border"></div>
+            </div>
+          ) : (
+            <AlbumInfoGrid albumData={albumData} />
+          )}
         </div>
         <div className="flex-[0.75]">
           <AlbumReviewsGrid />

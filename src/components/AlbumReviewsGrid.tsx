@@ -4,7 +4,7 @@ import AlbumReview from "./AlbumReview";
 import CreateReviewModal from "./CreateReviewModal";
 
 const AlbumReviewsGrid = () => {
-  const [reviewModal, setReviewModal] = useState(true);
+  const [reviewModal, setReviewModal] = useState(false);
 
   return (
     <div className="flex flex-col">

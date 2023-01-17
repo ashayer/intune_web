@@ -1,7 +1,7 @@
 import type { EntriesEntity } from "../types/popular";
 import Image from "next/image";
 import Router from "next/router";
-import type { RefObject } from "react";
+import { RefObject, useState } from "react";
 const PopularGridCard = ({
   entry,
   type,
@@ -9,11 +9,13 @@ const PopularGridCard = ({
   entry: EntriesEntity;
   type: string;
 }) => {
+  const [loading, setLoading] = useState(true);
+
   if (type === "album") {
     return (
       <button
         key={entry.albumMetadata?.albumUri}
-        className="transition-all hover:scale-95"
+        className="transition-all hover:scale-95 "
         onClick={() =>
           Router.push(`album/${entry.albumMetadata?.albumUri.slice(14)}`)
         }
@@ -31,6 +33,7 @@ const PopularGridCard = ({
           className="rounded-xl"
           height={208}
           width={208}
+          blurDataURL={entry.albumMetadata?.displayImageUri as string}
         />
       </button>
     );
@@ -47,6 +50,7 @@ const PopularGridCard = ({
           alt="artist cover"
           height={208}
           width={208}
+          blurDataURL={entry.artistMetadata?.displayImageUri as string}
         />
       </button>
     );

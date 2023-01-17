@@ -5,9 +5,7 @@ import { useState } from "react";
 // import { useForm } from "react-hook-form";
 import { trpc } from "../utils/trpc";
 import type { PopularChartResponse } from "../types/popular";
-import Navbar from "../components/Navbar";
 import PopularGrid from "../components/PopularGrid";
-import Footer from "../components/Footer";
 
 const Home: NextPage = () => {
   const [popularData, setPopularData] = useState<PopularChartResponse>(
@@ -42,14 +40,14 @@ const Home: NextPage = () => {
   return (
     <>
       <main className="mx-auto flex flex-col items-center lg:w-1/2">
-        {getPopularQuery.isLoading ? (
+        {true || getPopularQuery.isLoading ? (
           <div className="h-screen">
-            <div className="h-1/4 animate-spin border">.</div>
+            <div className="h-1/6 animate-spin border"></div>
           </div>
         ) : (
           <div className="flex min-h-screen w-full flex-col justify-start pb-6">
             <div>
-              <p className="p-6 text-center text-4xl font-bold">
+              <p className="p-6 text-center text-4xl font-bold ">
                 popular this week
               </p>
               <PopularGrid popularData={popularData} type="album" />

@@ -9,7 +9,7 @@ import {
 } from "react-icons/hi";
 import { trpc } from "../utils/trpc";
 import { NoUserModal } from "./NoUserModal";
-
+import AlbumPlaceholder from "../assets/AlbumPlaceholder.jpg";
 const AlbumInfoGrid = ({
   albumData,
 }: {
@@ -28,7 +28,7 @@ const AlbumInfoGrid = ({
   return (
     <div className="sticky top-10 flex flex-col items-center gap-y-4 text-center">
       <Image
-        src={albumData?.images[0]?.url || ""}
+        src={albumData?.images[0]?.url || AlbumPlaceholder}
         alt="album cover"
         className="rounded-xl"
         height={240}
