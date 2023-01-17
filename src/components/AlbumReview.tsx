@@ -5,17 +5,17 @@ const AlbumReview = () => {
   return (
     <div className="flex py-4">
       <div className="mx-2 flex flex-col items-center justify-around">
-        <button className="rounded-full">
+        <button className="w-12">
           <Image
             src="https://randomuser.me/api/portraits/women/94.jpg"
             alt="user"
-            height={25}
-            width={25}
-            className="w-10 rounded-full"
+            height={50}
+            width={50}
+            className="rounded-full"
           />
         </button>
-        <button className="btn-xs btn">
-          <HiOutlineHeart className="h-4 w-4 text-red-500" />
+        <button>
+          <HiOutlineHeart className="h-6 w-6 " />
         </button>
       </div>
       <div className="flex flex-col">

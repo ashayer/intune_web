@@ -21,13 +21,17 @@ const AlbumDetails: NextPage = () => {
   );
 
   return (
-    <div className="mx-auto min-h-screen lg:w-1/2">
+    <div className="mx-auto min-h-screen max-w-7xl">
       <div className="fixed bottom-0 left-1/2 mb-4 -translate-x-1/2 rounded-full border-2 bg-slate-200">
         Open modal
       </div>
-      <main className="flex">
-        <AlbumInfoGrid albumData={albumData} />
-        <AlbumReviewsGrid />
+      <main className="flex flex-col px-4 md:flex-row">
+        <div className="flex-[0.25]">
+          <AlbumInfoGrid albumData={albumData} />
+        </div>
+        <div className="flex-[0.75]">
+          <AlbumReviewsGrid />
+        </div>
       </main>
     </div>
   );

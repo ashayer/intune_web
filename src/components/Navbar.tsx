@@ -9,7 +9,7 @@ const Navbar = () => {
   const [showSearch, setShowSearch] = useState(false);
   const [parent] = useAutoAnimate(/* optional config */);
   return (
-    <nav className="mx-auto flex items-center justify-between p-2 lg:w-1/2">
+    <nav className="mx-auto flex max-w-7xl items-center justify-between p-2">
       <button className="pl-2" onClick={() => Router.back()}>
         <HiArrowCircleLeft className="h-6 w-6" />
       </button>
