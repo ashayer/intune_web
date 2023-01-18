@@ -150,4 +150,51 @@ export const albumRouter = router({
       if (albums.length > 0) return albums;
       return null;
     }),
+  getAlbumStats: publicProcedure
+    .input(z.object({ albumId: z.string() }))
+    .query(async ({ input, ctx }) => {
+      const albumsReviewCount = await ctx.prisma.albumReviews.count({
+        where: {
+          albumId: {
+            equals: input.albumId,
+          },
+        },
+      });
+
+      const albumsRatingCount = await ctx.prisma.userAlbumRatings.count({
+        where: {
+          albumId: {
+            equals: input.albumId,
+          },
+        },
+      });
+
+      const albumsLikeCount = await ctx.prisma.userAlbumLikes.count({
+        where: {
+          albumId: {
+            equals: input.albumId,
+          },
+        },
+      });
+
+      const albumAverageRating = await ctx.prisma.userAlbumRatings.aggregate({
+        where: {
+          albumId: {
+            equals: input.albumId,
+          },
+        },
+        _avg: {
+          rating: true,
+        },
+      });
+
+      const albumStatsObject = {
+        albumsReviewCount,
+        albumsRatingCount,
+        albumsLikeCount,
+        albumAverageRating,
+      };
+
+      return albumStatsObject;
+    }),
 });

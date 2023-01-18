@@ -12,7 +12,9 @@ export const reviewRouter = router({
         text: z.string().min(1).max(4000),
       })
     )
-    .query(async ({ input, ctx }) => {
+    .mutation(async ({ input, ctx }) => {
+      if (!input.userId) throw new Error("Not signed in");
+
       await ctx.prisma.albumReviews.create({
         data: {
           ...input,
