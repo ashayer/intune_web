@@ -46,7 +46,6 @@ export const albumRouter = router({
 
         return true;
       }
-
     }),
   checkAlbumLike: publicProcedure
     .input(z.object({ userId: z.string(), albumId: z.string() }))
@@ -139,10 +138,18 @@ export const albumRouter = router({
       return null;
     }),
   getAlbumReviewsById: publicProcedure
-    .input(z.object({ albumId: z.string() }))
+    .input(z.object({ userId: z.string(), albumId: z.string() }))
     .query(async ({ input, ctx }) => {
       const albums = await ctx.prisma.albumReviews.findMany({
+        orderBy: {
+          createdAt: "desc",
+        },
         where: {
+          NOT: {
+            userId: {
+              equals: input.userId,
+            },
+          },
           albumId: {
             equals: input.albumId,
           },
@@ -151,6 +158,28 @@ export const albumRouter = router({
       });
       if (albums.length > 0) return albums;
       return null;
+    }),
+  getYourAlbumReview: publicProcedure
+    .input(z.object({ userId: z.string(), albumId: z.string() }))
+    .query(async ({ input, ctx }) => {
+      const yourAlbumReview = await ctx.prisma.albumReviews.findMany({
+        where: {
+          AND: [
+            {
+              albumId: {
+                equals: input.albumId,
+              },
+            },
+            {
+              userId: {
+                equals: input.userId,
+              },
+            },
+          ],
+        },
+        take: 15,
+      });
+      return yourAlbumReview;
     }),
   getAlbumStats: publicProcedure
     .input(z.object({ albumId: z.string() }))

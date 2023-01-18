@@ -19,7 +19,9 @@ const CreateReviewModal = ({
 
   const { data: session } = useSession();
 
-  const createReviewMutate = trpc.review.createAlbumReview.useMutation({});
+  const createReviewMutate = trpc.review.createAlbumReview.useMutation({
+    onSuccess: () => setReviewModal(false),
+  });
 
   return (
     <>
