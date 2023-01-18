@@ -12,7 +12,7 @@ const AlbumReviewsGrid = () => {
         onClick={() => {
           setReviewModal((prev) => !prev);
         }}
-        className="btn-ghost btn-circle btn fixed bottom-0 left-1/2 mb-4 -translate-x-1/2 rounded-full border-2 bg-green-400 bg-slate-200 md:hidden"
+        className="btn-ghost btn-circle btn fixed bottom-0 left-1/2 mb-4 -translate-x-1/2 rounded-full border-2 bg-green-600  md:hidden"
       >
         <HiPlusSm className="h-10 w-10 text-white" />
       </button>
@@ -41,7 +41,7 @@ const AlbumReviewsGrid = () => {
           onClick={() => {
             setReviewModal((prev) => !prev);
           }}
-          className="invisible flex items-center rounded-xl bg-green-6 00 py-1 pr-4 pl-3 font-bold text-white md:visible"
+          className="bg-green-6 00 invisible flex items-center rounded-xl bg-green-600 py-1 pr-4 pl-3 font-bold text-white md:visible"
         >
           <HiPlusSm className="h-6 w-6 text-white" /> Review
         </button>

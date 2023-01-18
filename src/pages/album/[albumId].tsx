@@ -48,10 +48,27 @@ const AlbumDetails: NextPage = () => {
           )}
         </div>
         <div className="flex-[0.75]">
-          <TracklistGrid
-            tracklistInfo={tracklistInfo as SpotifyApi.AlbumTracksResponse}
-          />
-          <AlbumReviewsGrid />
+          {albumTracksQuery.isLoading && !albumTracksQuery.isSuccess ? (
+            <div className="flex items-center justify-center">
+              <div className="h-24 w-24 animate-pulse">
+                <Image src={loadingGif} alt="" />
+              </div>
+            </div>
+          ) : (
+            <TracklistGrid
+              tracklistInfo={tracklistInfo as SpotifyApi.AlbumTracksResponse}
+            />
+          )}
+
+          {albumTracksQuery.isLoading && !albumTracksQuery.isSuccess ? (
+            <div className="flex h-screen items-center justify-center">
+              <div className="h-24 w-24 animate-pulse">
+                <Image src={loadingGif} alt="" />
+              </div>
+            </div>
+          ) : (
+            <AlbumReviewsGrid />
+          )}
         </div>
       </main>
     </div>

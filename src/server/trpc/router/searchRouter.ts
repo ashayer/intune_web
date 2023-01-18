@@ -124,7 +124,6 @@ export const searchRouter = router({
           result = data;
         });
 
-      console.log(result);
       return result;
     }),
   getNewReleases: publicProcedure.query(async ({ input }) => {
