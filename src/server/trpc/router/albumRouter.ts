@@ -136,4 +136,18 @@ export const albumRouter = router({
 
       return null;
     }),
+  getAlbumReviewsById: publicProcedure
+    .input(z.object({ albumId: z.string() }))
+    .query(async ({ input, ctx }) => {
+      const albums = await ctx.prisma.albumReviews.findMany({
+        where: {
+          albumId: {
+            equals: input.albumId,
+          },
+        },
+        take: 15,
+      });
+      if (albums.length > 0) return albums;
+      return null;
+    }),
 });

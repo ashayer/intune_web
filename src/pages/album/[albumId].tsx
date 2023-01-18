@@ -12,6 +12,8 @@ const AlbumDetails: NextPage = () => {
   const [tracklistInfo, setTracklistInfo] =
     useState<SpotifyApi.AlbumTracksResponse>();
 
+  const [reviewsList, setReviewList] = useState();
+
   const nrouter = useRouter();
   const { albumId } = nrouter.query;
 
@@ -31,6 +33,15 @@ const AlbumDetails: NextPage = () => {
     {
       onSuccess: (data) => setTracklistInfo(data),
     }
+  );
+
+  const albumReviewsQuery = trpc.album.getAlbumReviewsById.useQuery(
+    {
+      albumId: albumId as string,
+    }
+    // {
+    //   onSuccess: (data) => setReviewList(data),
+    // }
   );
 
   return (
@@ -60,14 +71,14 @@ const AlbumDetails: NextPage = () => {
             />
           )}
 
-          {albumTracksQuery.isLoading && !albumTracksQuery.isSuccess ? (
+          {albumReviewsQuery.isLoading && !albumReviewsQuery.isSuccess ? (
             <div className="flex h-screen items-center justify-center">
               <div className="h-24 w-24 animate-pulse">
                 <Image src={loadingGif} alt="" />
               </div>
             </div>
           ) : (
-            <AlbumReviewsGrid />
+            <AlbumReviewsGrid albumReviews={albumReviewsQuery.data} />
           )}
         </div>
       </main>

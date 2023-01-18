@@ -1,9 +1,14 @@
+import type { AlbumReviews } from "@prisma/client";
 import { useState } from "react";
 import { HiChevronRight, HiPlusSm, HiX } from "react-icons/hi";
 import AlbumReview from "./AlbumReview";
 import CreateReviewModal from "./CreateReviewModal";
 
-const AlbumReviewsGrid = () => {
+const AlbumReviewsGrid = ({
+  albumReviews,
+}: {
+  albumReviews: AlbumReviews[];
+}) => {
   const [reviewModal, setReviewModal] = useState(false);
 
   return (
@@ -47,28 +52,22 @@ const AlbumReviewsGrid = () => {
         </button>
       </div>
       <div className="flex flex-[0.75] flex-col">
-        <AlbumReview />
-        <AlbumReview />
-        <AlbumReview />
-        <AlbumReview />
-        <AlbumReview />
-        <AlbumReview />
-        <AlbumReview />
-        <AlbumReview />
-        <AlbumReview />
-        <AlbumReview />
-        <AlbumReview />
-        <AlbumReview />
-        <AlbumReview />
-        <AlbumReview />
-        <AlbumReview />
+        {albumReviews ? (
+          albumReviews.map((review, index) => <div key={index}>Review</div>)
+        ) : (
+          <div className="p-4 text-center text-xl font-bold">
+            Be the first to leave a review!
+          </div>
+        )}
       </div>
-      <div className="py-4 text-end">
-        <button className="btn">
-          Older
-          <HiChevronRight className="h-6 w-6" />
-        </button>
-      </div>
+      {albumReviews && (
+        <div className="py-4 text-end">
+          <button className="btn">
+            Older
+            <HiChevronRight className="h-6 w-6" />
+          </button>
+        </div>
+      )}
     </div>
   );
 };

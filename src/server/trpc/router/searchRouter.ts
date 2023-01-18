@@ -116,14 +116,13 @@ export const searchRouter = router({
       await fetch(
         `https://api.spotify.com/v1/albums/${
           input.albumId as string
-        }/tracks?limit=50`,
+        }/tracks?limit=50&market=US`,
         apiParameters
       )
         .then((response) => response.json())
         .then((data: SpotifyApi.AlbumTracksResponse) => {
           result = data;
         });
-
       return result;
     }),
   getNewReleases: publicProcedure.query(async ({ input }) => {

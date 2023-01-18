@@ -1,5 +1,5 @@
 import { MdExplicit } from "react-icons/md";
-
+import { HiPlay } from "react-icons/hi";
 const msToSeconds = (millis: number) => {
   const minutes = Math.floor(millis / 60000);
   const seconds = parseInt(((millis % 60000) / 1000).toFixed(0));
@@ -23,6 +23,9 @@ const TrackInfo = ({
         </div>
       </div>
       <p>{msToSeconds(trackData.duration_ms)}</p>
+      {/* <button onClick={() => console.log(trackData.preview_url)}>
+        <HiPlay className="h-6 w-6" />
+      </button> */}
     </div>
   );
 };
