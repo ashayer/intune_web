@@ -6,8 +6,11 @@ import AlbumInfoGrid from "../../components/AlbumInfoGrid";
 import AlbumReviewsGrid from "../../components/AlbumReviewsGrid";
 import Image from "next/image";
 import loadingGif from "../../assets/loading.gif";
+import TracklistGrid from "../../components/TracklistGrid";
 const AlbumDetails: NextPage = () => {
   const [albumData, setAlbumData] = useState<SpotifyApi.AlbumObjectFull>();
+  const [tracklistInfo, setTracklistInfo] =
+    useState<SpotifyApi.AlbumTracksResponse>();
 
   const nrouter = useRouter();
   const { albumId } = nrouter.query;
@@ -21,9 +24,14 @@ const AlbumDetails: NextPage = () => {
     }
   );
 
-  const albumTracksQuery = trpc.search.getAlbumTracksById.useQuery({
-    albumId: albumId as string,
-  });
+  const albumTracksQuery = trpc.search.getAlbumTracksById.useQuery(
+    {
+      albumId: albumId as string,
+    },
+    {
+      onSuccess: (data) => setTracklistInfo(data),
+    }
+  );
 
   return (
     <div className="mx-auto min-h-screen max-w-7xl">
@@ -40,6 +48,9 @@ const AlbumDetails: NextPage = () => {
           )}
         </div>
         <div className="flex-[0.75]">
+          <TracklistGrid
+            tracklistInfo={tracklistInfo as SpotifyApi.AlbumTracksResponse}
+          />
           <AlbumReviewsGrid />
         </div>
       </main>
