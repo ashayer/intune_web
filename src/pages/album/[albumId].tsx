@@ -44,6 +44,8 @@ const AlbumDetails: NextPage = () => {
     // }
   );
 
+  // console.log(albumStatsQuery.data?.albumAverageRating._avg.rating)
+
   return (
     <div className="mx-auto min-h-screen max-w-7xl">
       <main className="flex flex-col px-4 md:flex-row">
@@ -55,7 +57,7 @@ const AlbumDetails: NextPage = () => {
               </div>
             </div>
           ) : (
-            <AlbumInfoGrid albumData={albumData} />
+            <AlbumInfoGrid albumData={albumData} albumId={albumId as string} />
           )}
         </div>
         <div className="flex-[0.75]">
@@ -78,7 +80,10 @@ const AlbumDetails: NextPage = () => {
               </div>
             </div>
           ) : (
-            <AlbumReviewsGrid albumReviews={albumReviewsQuery.data} />
+            <AlbumReviewsGrid
+              albumReviews={albumReviewsQuery.data}
+              albumId={albumId as string}
+            />
           )}
         </div>
       </main>
