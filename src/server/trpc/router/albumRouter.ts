@@ -34,6 +34,7 @@ export const albumRouter = router({
             id: userLike.id,
           },
         });
+        return false;
       } else {
         await ctx.prisma.userAlbumLikes.create({
           data: {
@@ -42,9 +43,10 @@ export const albumRouter = router({
             isLike: true,
           },
         });
+
+        return true;
       }
 
-      return null;
     }),
   checkAlbumLike: publicProcedure
     .input(z.object({ userId: z.string(), albumId: z.string() }))

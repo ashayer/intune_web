@@ -29,8 +29,7 @@ const CreateReviewModal = ({
         }`}
       >
         <div className="modal-box my-10 flex min-h-full flex-col border">
-          <div className="flex items-start justify-between ">
-            <h1 className="mb-4 text-2xl font-bold">Review `album name`</h1>
+          <div className="flex items-end justify-end p-2">
             <button
               title={reviewTextCount > 0 ? "Save and close" : "Close"}
               onClick={() => {

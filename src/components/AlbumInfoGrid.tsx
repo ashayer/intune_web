@@ -17,15 +17,32 @@ const AlbumInfoGrid = ({
   albumData: SpotifyApi.AlbumObjectFull | undefined;
   albumId: string;
 }) => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   const [showModal, setShowModal] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
 
   const likeAlbumQuery = trpc.album.likeAlbum.useMutation({
     onError: () => {
       setShowModal(true);
     },
+    onSuccess: (data) => {
+      setIsLiked(data);
+      albumStatsQuery.refetch();
+    },
   });
+
+  const checkAlbumLikeQuery = trpc.album.checkAlbumLike.useQuery(
+    {
+      albumId: albumId as string,
+      userId: session?.user?.id as string,
+    },
+    {
+      onSuccess: (data) => {
+        setIsLiked(data);
+      },
+    }
+  );
 
   const albumStatsQuery = trpc.album.getAlbumStats.useQuery({
     albumId: albumId as string,
@@ -50,7 +67,11 @@ const AlbumInfoGrid = ({
             });
           }}
         >
-          <HiOutlineHeart className="h-8 w-8" />
+          {isLiked ? (
+            <HiHeart className="h-8 w-8 text-red-600" />
+          ) : (
+            <HiOutlineHeart className="h-8 w-8" />
+          )}
         </button>
         stars here
         <div className="w-full border-b border-slate-600">
