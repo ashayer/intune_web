@@ -4,7 +4,7 @@ import type { LegacyRef } from "react";
 import { useState } from "react";
 import { HiArrowCircleLeft, HiOutlineX, HiSearch } from "react-icons/hi";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
-
+import { BsSoundwave } from "react-icons/bs";
 const Navbar = () => {
   const [showSearch, setShowSearch] = useState(false);
   const [parent] = useAutoAnimate(/* optional config */);
@@ -13,7 +13,9 @@ const Navbar = () => {
       <button className="pl-2" onClick={() => Router.back()}>
         <HiArrowCircleLeft className="h-6 w-6" />
       </button>
-      <button className="no-animation font-extrabold">I|I|I INTUNE</button>
+      <button className="no-animation flex items-center gap-x-1 font-extrabold">
+        <BsSoundwave /> INTUNE
+      </button>
       <div className="flex items-center justify-between gap-x-2 ">
         <div
           className="flex items-center justify-between gap-x-2 "

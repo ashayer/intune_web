@@ -6,7 +6,8 @@ import { useState } from "react";
 import { trpc } from "../utils/trpc";
 import type { PopularChartResponse } from "../types/popular";
 import PopularGrid from "../components/PopularGrid";
-
+import loadingGif from "../assets/loading.gif";
+import Image from "next/image";
 const Home: NextPage = () => {
   const [popularData, setPopularData] = useState<PopularChartResponse>(
     {} as PopularChartResponse
@@ -39,10 +40,12 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <main className="mx-auto flex flex-col items-center lg:w-1/2">
-        {true || getPopularQuery.isLoading ? (
-          <div className="h-screen">
-            <div className="h-1/6 animate-spin border"></div>
+      <main className="mx-auto flex max-w-7xl flex-col items-center">
+        {getPopularQuery.isLoading ? (
+          <div className="relative flex h-screen items-center">
+            <div className="h-24 w-24 animate-pulse">
+              <Image src={loadingGif} alt="" />
+            </div>
           </div>
         ) : (
           <div className="flex min-h-screen w-full flex-col justify-start pb-6">

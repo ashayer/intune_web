@@ -4,7 +4,8 @@ import { useRouter } from "next/router";
 import { trpc } from "../../utils/trpc";
 import AlbumInfoGrid from "../../components/AlbumInfoGrid";
 import AlbumReviewsGrid from "../../components/AlbumReviewsGrid";
-
+import Image from "next/image";
+import loadingGif from "../../assets/loading.gif";
 const AlbumDetails: NextPage = () => {
   const [albumData, setAlbumData] = useState<SpotifyApi.AlbumObjectFull>();
 
@@ -26,7 +27,9 @@ const AlbumDetails: NextPage = () => {
         <div className="flex-[0.25]">
           {albumInfoQuery.isLoading && !albumInfoQuery.isSuccess ? (
             <div className="flex h-screen items-center justify-center">
-              <div className="w-6 animate-spin border"></div>
+              <div className="h-24 w-24 animate-pulse">
+                <Image src={loadingGif} alt="" />
+              </div>
             </div>
           ) : (
             <AlbumInfoGrid albumData={albumData} />
