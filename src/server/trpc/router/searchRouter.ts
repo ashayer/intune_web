@@ -93,6 +93,40 @@ export const searchRouter = router({
         });
       return result;
     }),
+  getAlbumTracksById: publicProcedure
+    .input(z.object({ albumId: z.string() }))
+    .query(async ({ input }) => {
+      let accessToken;
+      let result: SpotifyApi.AlbumTracksResponse =
+        {} as SpotifyApi.AlbumTracksResponse;
+      await fetch("https://accounts.spotify.com/api/token", authParameters)
+        .then((response) => response.json())
+        .then((token) => {
+          accessToken = token.access_token;
+        });
+
+      const apiParameters = {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + accessToken,
+        },
+      };
+
+      await fetch(
+        `https://api.spotify.com/v1/albums/${
+          input.albumId as string
+        }/tracks?limit=50`,
+        apiParameters
+      )
+        .then((response) => response.json())
+        .then((data: SpotifyApi.AlbumTracksResponse) => {
+          result = data;
+        });
+
+      console.log(result);
+      return result;
+    }),
   getNewReleases: publicProcedure.query(async ({ input }) => {
     let accessToken;
     let result: SpotifyApi.AlbumObjectFull[] = [];

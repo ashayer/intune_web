@@ -41,7 +41,7 @@ const AlbumReviewsGrid = () => {
           onClick={() => {
             setReviewModal((prev) => !prev);
           }}
-          className="invisible flex items-center rounded-xl bg-green-400 py-1 pr-4 pl-3 font-bold text-white md:visible"
+          className="invisible flex items-center rounded-xl bg-green-6 00 py-1 pr-4 pl-3 font-bold text-white md:visible"
         >
           <HiPlusSm className="h-6 w-6 text-white" /> Review
         </button>

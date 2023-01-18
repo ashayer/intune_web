@@ -21,6 +21,10 @@ const AlbumDetails: NextPage = () => {
     }
   );
 
+  const albumTracksQuery = trpc.search.getAlbumTracksById.useQuery({
+    albumId: albumId as string,
+  });
+
   return (
     <div className="mx-auto min-h-screen max-w-7xl">
       <main className="flex flex-col px-4 md:flex-row">
