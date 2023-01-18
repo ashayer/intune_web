@@ -16,7 +16,7 @@ const AlbumReviewsGrid = ({
   const [reviewModal, setReviewModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   return (
     <div className="flex flex-col">
@@ -24,7 +24,7 @@ const AlbumReviewsGrid = ({
 
       <button
         onClick={() => {
-          if (!session?.user) {
+          if (status === "unauthenticated") {
             setShowModal((prev) => !prev);
           } else {
             setReviewModal((prev) => !prev);
@@ -53,7 +53,7 @@ const AlbumReviewsGrid = ({
         </div>
         <button
           onClick={() => {
-            if (!session?.user) {
+            if (status === "unauthenticated") {
               setShowModal((prev) => !prev);
             } else {
               setReviewModal((prev) => !prev);

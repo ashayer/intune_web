@@ -5,9 +5,13 @@ import { useState } from "react";
 import { HiArrowCircleLeft, HiOutlineX, HiSearch } from "react-icons/hi";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { BsSoundwave } from "react-icons/bs";
+import { useSession, signIn, signOut } from "next-auth/react";
 const Navbar = () => {
   const [showSearch, setShowSearch] = useState(false);
   const [parent] = useAutoAnimate(/* optional config */);
+
+  const { data: session, status } = useSession();
+
   return (
     <nav className="mx-auto flex max-w-7xl items-center justify-between p-2">
       <button className="pl-2" onClick={() => Router.back()}>
@@ -52,30 +56,35 @@ const Navbar = () => {
             <HiSearch className="h-4 w-4" />
           </button>
         </div>
-        <div className="dropdown-end dropdown">
-          <div className="avatar">
-            <button className="m-2 rounded-full ring ring-white">
-              <Image
-                src="https://randomuser.me/api/portraits/women/94.jpg"
-                alt="user"
-                height={25}
-                width={25}
-                className="rounded-full "
-              />
-            </button>
+        {status === "unauthenticated" ? (
+          <button className="btn-sm btn" onClick={() => signIn()}>
+            Log in
+          </button>
+        ) : (
+          <div className="dropdown-end dropdown">
+            <div className="avatar">
+              <button className="m-2 rounded-full ">
+                <Image
+                  src={session?.user?.image as string}
+                  alt="user"
+                  height={25}
+                  width={25}
+                  className="rounded-full "
+                />
+              </button>
+            </div>
+            <ul
+              tabIndex={0}
+              className="dropdown-content menu rounded-box mt-4 w-52 bg-base-100 p-2 shadow"
+            >
+              <li>
+                <button onClick={() => signOut()}>
+                  Sign out
+                </button>
+              </li>
+            </ul>
           </div>
-          <ul
-            tabIndex={0}
-            className="dropdown-content menu rounded-box mt-4 w-52 bg-base-100 p-2 shadow"
-          >
-            <li>
-              <a>Item 1</a>
-            </li>
-            <li>
-              <a>Item 2</a>
-            </li>
-          </ul>
-        </div>
+        )}
       </div>
     </nav>
   );
