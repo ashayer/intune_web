@@ -32,7 +32,7 @@ const Navbar = () => {
 
   return (
     <nav className="mx-auto flex max-w-7xl items-center justify-between p-2">
-      <button className="pl-2" onClick={() => Router.push("/")}>
+      <button className="pl-2" onClick={() => Router.replace("/")}>
         <HiHome className="h-6 w-6" />
       </button>
       <button className="no-animation flex items-center gap-x-1 font-extrabold">
@@ -55,6 +55,7 @@ const Navbar = () => {
               </button>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <input
+                  autoFocus
                   type="text"
                   defaultValue=""
                   {...register("searchText")}
@@ -64,18 +65,21 @@ const Navbar = () => {
               </form>
             </div>
           )}
-          <button
-            className="btn-ghost btn-sm btn"
-            onClick={() => {
-              if (!showSearch) {
-                setShowSearch((prev) => !prev);
-              } else {
-                //query
-              }
-            }}
-          >
-            <HiSearch className="h-4 w-4" />
-          </button>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <button
+              type="submit"
+              className="btn-ghost btn-sm btn"
+              onClick={() => {
+                if (!showSearch) {
+                  setShowSearch((prev) => !prev);
+                } else {
+                  handleSubmit(onSubmit);
+                }
+              }}
+            >
+              <HiSearch className="h-4 w-4" />
+            </button>
+          </form>
         </div>
         {status === "unauthenticated" ? (
           <button className="btn-sm btn" onClick={() => signIn()}>
