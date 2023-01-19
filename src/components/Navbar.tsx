@@ -1,9 +1,7 @@
 import Image from "next/image";
 import Router from "next/router";
-import type { LegacyRef } from "react";
 import { useState } from "react";
 import {
-  HiArrowCircleLeft,
   HiHome,
   HiOutlineX,
   HiSearch,
@@ -35,14 +33,11 @@ const Navbar = () => {
       <button className="pl-2" onClick={() => Router.replace("/")}>
         <HiHome className="h-6 w-6" />
       </button>
-      <button className="no-animation flex items-center gap-x-1 font-extrabold">
+      <button className="no-animation hidden items-center gap-x-1 font-extrabold md:flex">
         <BsSoundwave /> INTUNE
       </button>
       <div className="flex items-center justify-between gap-x-2 ">
-        <div
-          className="flex items-center justify-between gap-x-2 "
-          ref={parent as LegacyRef<HTMLDivElement>}
-        >
+        <div className="flex items-center justify-between gap-x-2 ">
           {showSearch && (
             <div className="flex items-center justify-between gap-x-2">
               <button
