@@ -1,8 +1,5 @@
 import { type NextPage } from "next";
-import type { LegacyRef } from "react";
 import { useState } from "react";
-// import type { SubmitHandler } from "react-hook-form";
-// import { useForm } from "react-hook-form";
 import { trpc } from "../utils/trpc";
 import type { PopularChartResponse } from "../types/popular";
 import PopularGrid from "../components/PopularGrid";
@@ -12,24 +9,6 @@ const Home: NextPage = () => {
   const [popularData, setPopularData] = useState<PopularChartResponse>(
     {} as PopularChartResponse
   );
-
-  // const onSubmit: SubmitHandler<Inputs> = (data) => {
-  //   if (data.searchText.trim() !== "") {
-  //     setSearchText(data.searchText);
-  //     searchTextQuery.refetch();
-  //   }
-  //   return null;
-  // };
-
-  // const [searchText, setSearchText] = useState("");
-
-  // const searchTextQuery = trpc.search.searchWithText.useQuery(
-  //   { text: searchText },
-  //   {
-  //     onSuccess: (data) => setTestAlbumData(data),
-  //     enabled: searchText.length > 0,
-  //   }
-  // );
 
   const getPopularQuery = trpc.search.getPopular.useQuery(
     { text: "" },

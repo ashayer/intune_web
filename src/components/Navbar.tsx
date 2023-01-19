@@ -11,11 +11,24 @@ import {
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { BsSoundwave } from "react-icons/bs";
 import { useSession, signIn, signOut } from "next-auth/react";
+import type { SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
+type Inputs = {
+  searchText: string;
+};
 const Navbar = () => {
   const [showSearch, setShowSearch] = useState(false);
-  const [parent] = useAutoAnimate(/* optional config */);
+  const [parent] = useAutoAnimate();
 
   const { data: session, status } = useSession();
+  const { register, handleSubmit } = useForm<Inputs>();
+
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    if (data.searchText.trim() !== "") {
+      Router.push(`/search/${data.searchText}`);
+    }
+    return null;
+  };
 
   return (
     <nav className="mx-auto flex max-w-7xl items-center justify-between p-2">
@@ -40,12 +53,15 @@ const Navbar = () => {
               >
                 <HiOutlineX />
               </button>
-              <input
-                type="text"
-                name=""
-                id=""
-                className="input input-sm bg-slate-600"
-              />
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <input
+                  type="text"
+                  defaultValue=""
+                  {...register("searchText")}
+                  placeholder="Search for music..."
+                  className="input input-sm bg-slate-600"
+                />
+              </form>
             </div>
           )}
           <button
