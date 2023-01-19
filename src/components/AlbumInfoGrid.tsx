@@ -44,9 +44,14 @@ const AlbumInfoGrid = ({
     }
   );
 
-  const albumStatsQuery = trpc.album.getAlbumStats.useQuery({
-    albumId: albumId as string,
-  });
+  const albumStatsQuery = trpc.album.getAlbumStats.useQuery(
+    {
+      albumId: albumId as string,
+    },
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
 
   return (
     <>
@@ -73,7 +78,6 @@ const AlbumInfoGrid = ({
             <HiOutlineHeart className="h-8 w-8" />
           )}
         </button>
-        stars here
         <div className="w-full border-b border-slate-600">
           <p className="text-md font-semibold underline underline-offset-4">
             Artist
