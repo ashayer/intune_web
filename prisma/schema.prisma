@@ -65,6 +65,7 @@ model AlbumReviews {
   id          String        @unique @default(cuid())
   albumId     String
   userId      String
+  userImage   String
   username    String
   text        String        @db.VarChar(4000)
   createdAt   DateTime      @default(now())

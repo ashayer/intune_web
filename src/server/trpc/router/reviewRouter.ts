@@ -10,6 +10,7 @@ export const reviewRouter = router({
         username: z.string(),
         albumId: z.string(),
         text: z.string().min(1).max(4000),
+        userImage: z.string(),
       })
     )
     .mutation(async ({ input, ctx }) => {

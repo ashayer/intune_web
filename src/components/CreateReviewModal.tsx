@@ -83,7 +83,7 @@ const CreateReviewModal = ({
           </label>
           <div className="modal-action justify-between">
             <button
-              className="font-bold"
+              className="btn-sm btn font-bold"
               onClick={() => {
                 confirm("Are you sure you want to do wipe your review?");
                 setReviewText("");
@@ -94,7 +94,9 @@ const CreateReviewModal = ({
             </button>
             {createOrUpdate === "create" ? (
               <button
-                className="btn-sm btn bg-green-500 font-bold text-white"
+                className={`btn-sm btn bg-green-500 font-bold text-white ${
+                  createReviewMutate.isLoading && "loading"
+                }`}
                 onClick={() => {
                   if (reviewText.length > 0) {
                     createReviewMutate.mutate({
@@ -102,6 +104,7 @@ const CreateReviewModal = ({
                       username: session?.user?.name as string,
                       albumId: albumId,
                       text: reviewText,
+                      userImage: session?.user?.image as string,
                     });
                   }
                 }}
@@ -110,7 +113,9 @@ const CreateReviewModal = ({
               </button>
             ) : (
               <button
-                className="btn-sm btn bg-blue-500 font-bold text-white"
+                className={`btn-sm btn bg-blue-500 font-bold text-white ${
+                  updateReviewMutate.isLoading && "loading"
+                }`}
                 onClick={() => {
                   if (reviewText.length > 0) {
                     updateReviewMutate.mutate({
