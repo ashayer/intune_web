@@ -4,15 +4,21 @@ import { useRouter } from "next/router";
 import { trpc } from "../../utils/trpc";
 import AlbumInfoGrid from "../../components/AlbumInfoGrid";
 import AlbumReviewsGrid from "../../components/AlbumReviewsGrid";
-import Image from "next/image";
+import * as NextImage from "next/image";
 import loadingGif from "../../assets/loading.gif";
 import TracklistGrid from "../../components/TracklistGrid";
+import { useSession } from "next-auth/react";
+import { loadImage, analyzeImage, rgbToHex } from "../../assets/colorPicker";
+
 const AlbumDetails: NextPage = () => {
   const [albumData, setAlbumData] = useState<SpotifyApi.AlbumObjectFull>();
   const [tracklistInfo, setTracklistInfo] =
     useState<SpotifyApi.AlbumTracksResponse>();
 
+  const [bgColor, setbgColor] = useState("black");
   const [reviewsList, setReviewList] = useState();
+
+  const { data: session } = useSession();
 
   const nrouter = useRouter();
   const { albumId } = nrouter.query;
@@ -22,7 +28,19 @@ const AlbumDetails: NextPage = () => {
       albumId: albumId as string,
     },
     {
-      onSuccess: (data) => setAlbumData(data),
+      onSuccess: (data) => {
+        setAlbumData(data);
+        if (data.images && data.images[2]) {
+          const imageComponent = loadImage(data.images[2].url as string);
+          imageComponent.onload = function () {
+            const palette = analyzeImage(imageComponent);
+            if (palette && palette[0]) {
+              setbgColor(rgbToHex(palette[0].r, palette[0].g, palette[0].b));
+            }
+          };
+        }
+      },
+      refetchOnWindowFocus: false,
     }
   );
 
@@ -32,12 +50,16 @@ const AlbumDetails: NextPage = () => {
     },
     {
       onSuccess: (data) => setTracklistInfo(data),
+      refetchOnWindowFocus: false,
     }
   );
 
   const albumReviewsQuery = trpc.album.getAlbumReviewsById.useQuery(
     {
       albumId: albumId as string,
+    },
+    {
+      refetchOnWindowFocus: false,
     }
     // {
     //   onSuccess: (data) => setReviewList(data),
@@ -47,46 +69,58 @@ const AlbumDetails: NextPage = () => {
   // console.log(albumStatsQuery.data?.albumAverageRating._avg.rating)
 
   return (
-    <div className="mx-auto min-h-screen max-w-7xl">
-      <main className="flex flex-col px-4 md:flex-row">
-        <div className="flex-[0.25]">
-          {albumInfoQuery.isLoading && !albumInfoQuery.isSuccess ? (
-            <div className="flex h-screen items-center justify-center">
-              <div className="h-24 w-24 animate-pulse">
-                <Image src={loadingGif} alt="" />
+    <div
+      style={{
+        background: bgColor,
+      }}
+    >
+      <div className="mx-auto min-h-screen max-w-7xl bg-black">
+        <main className="flex flex-col px-4 md:flex-row">
+          <div className="flex-[0.25]">
+            <p className="my-4 border-b border-zinc-700 pb-4 text-center font-bold">
+              {albumData?.name}
+            </p>
+            {albumInfoQuery.isLoading && !albumInfoQuery.isSuccess ? (
+              <div className="flex h-screen items-center justify-center">
+                <div className="h-24 w-24 animate-pulse">
+                  <NextImage.default src={loadingGif} alt="" />
+                </div>
               </div>
-            </div>
-          ) : (
-            <AlbumInfoGrid albumData={albumData} albumId={albumId as string} />
-          )}
-        </div>
-        <div className="flex-[0.75]">
-          {albumTracksQuery.isLoading && !albumTracksQuery.isSuccess ? (
-            <div className="flex items-center justify-center">
-              <div className="h-24 w-24 animate-pulse">
-                <Image src={loadingGif} alt="" />
+            ) : (
+              <AlbumInfoGrid
+                albumData={albumData}
+                albumId={albumId as string}
+              />
+            )}
+          </div>
+          <div className="flex-[0.75]">
+            {albumTracksQuery.isLoading && !albumTracksQuery.isSuccess ? (
+              <div className="flex items-center justify-center">
+                <div className="h-24 w-24 animate-pulse">
+                  <NextImage.default src={loadingGif} alt="" />
+                </div>
               </div>
-            </div>
-          ) : (
-            <TracklistGrid
-              tracklistInfo={tracklistInfo as SpotifyApi.AlbumTracksResponse}
-            />
-          )}
+            ) : (
+              <TracklistGrid
+                tracklistInfo={tracklistInfo as SpotifyApi.AlbumTracksResponse}
+              />
+            )}
 
-          {albumReviewsQuery.isLoading && !albumReviewsQuery.isSuccess ? (
-            <div className="flex h-screen items-center justify-center">
-              <div className="h-24 w-24 animate-pulse">
-                <Image src={loadingGif} alt="" />
+            {albumReviewsQuery.isLoading && !albumReviewsQuery.isSuccess ? (
+              <div className="flex h-screen items-center justify-center">
+                <div className="h-24 w-24 animate-pulse">
+                  <NextImage.default src={loadingGif} alt="" />
+                </div>
               </div>
-            </div>
-          ) : (
-            <AlbumReviewsGrid
-              albumReviews={albumReviewsQuery.data}
-              albumId={albumId as string}
-            />
-          )}
-        </div>
-      </main>
+            ) : (
+              <AlbumReviewsGrid
+                albumReviews={albumReviewsQuery.data}
+                albumId={albumId as string}
+              />
+            )}
+          </div>
+        </main>
+      </div>
     </div>
   );
 };
