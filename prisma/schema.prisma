@@ -101,13 +101,14 @@ model FollowersList {
 }
 
 model UserAlbumLikes {
-  id        String   @unique @default(cuid())
-  albumId   String
-  userId    String
-  isLike    Boolean
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  user      User     @relation(fields: [userId], references: [id])
+  id         String   @unique @default(cuid())
+  albumId    String
+  userId     String
+  isLike     Boolean
+  albumImage String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  user       User     @relation(fields: [userId], references: [id])
 
   @@index([userId])
 }
