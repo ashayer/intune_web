@@ -10,6 +10,8 @@ import {
 import { trpc } from "../utils/trpc";
 import { NoUserModal } from "./NoUserModal";
 import AlbumPlaceholder from "../assets/AlbumPlaceholder.jpg";
+
+
 const AlbumInfoGrid = ({
   albumData,
   albumId,
@@ -41,6 +43,7 @@ const AlbumInfoGrid = ({
       onSuccess: (data) => {
         setIsLiked(data);
       },
+      enabled: status === "authenticated",
     }
   );
 
@@ -64,6 +67,7 @@ const AlbumInfoGrid = ({
           height={240}
           width={240}
         />
+
         <button
           onClick={() => {
             likeAlbumQuery.mutate({
@@ -82,7 +86,7 @@ const AlbumInfoGrid = ({
           <p className="text-md font-semibold underline underline-offset-4">
             Artist
           </p>
-          <p className="mb-4 text-2xl font-bold">
+          <p className="mb-4 text-lg font-bold">
             {albumData?.artists
               ?.map(function (artistinfo) {
                 return artistinfo.name;
@@ -93,14 +97,14 @@ const AlbumInfoGrid = ({
           <p className="text-md font-semibold underline underline-offset-4">
             Released
           </p>
-          <p className="mb-4 text-2xl font-bold">
+          <p className="mb-4 text-lg font-bold">
             {albumData?.release_date.slice(0, 4)}
           </p>
 
           <p className="text-md font-semibold underline underline-offset-4">
             Rating
           </p>
-          <p className="mb-4 text-2xl font-bold">
+          <p className="mb-4 text-lg font-bold">
             {albumStatsQuery.data?.albumAverageRating._avg.rating || "N/A"}
           </p>
         </div>
