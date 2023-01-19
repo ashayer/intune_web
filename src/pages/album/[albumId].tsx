@@ -76,7 +76,10 @@ const AlbumDetails: NextPage = () => {
     >
       <div
         className="mx-auto min-h-screen max-w-7xl"
-        style={{ backgroundColor: "#121212" }}
+        style={{
+          backgroundColor: "#121212",
+          boxShadow: "0 0 40px 75px #121212",
+        }}
       >
         <main className="flex flex-col px-4 md:flex-row">
           <div className="flex-[0.25]">
