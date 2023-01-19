@@ -74,7 +74,10 @@ const AlbumDetails: NextPage = () => {
         background: bgColor,
       }}
     >
-      <div className="mx-auto min-h-screen max-w-7xl bg-black">
+      <div
+        className="mx-auto min-h-screen max-w-7xl"
+        style={{ backgroundColor: "#121212" }}
+      >
         <main className="flex flex-col px-4 md:flex-row">
           <div className="flex-[0.25]">
             <p className="my-4 border-b border-zinc-700 pb-4 text-center font-bold">
