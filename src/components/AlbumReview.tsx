@@ -4,10 +4,10 @@ import { HiOutlineHeart } from "react-icons/hi";
 
 const AlbumReview = ({ review }: { review: AlbumReviews }) => {
   return (
-    <div className="flex">
+    <div className="flex border-b border-zinc-800 pb-2">
       <div className="mx-2 flex flex-col items-center gap-y-2">
         <Image
-          src="https://randomuser.me/api/portraits/women/94.jpg"
+          src={review.userImage}
           alt="user"
           height={50}
           width={50}
