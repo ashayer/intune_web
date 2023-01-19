@@ -18,7 +18,7 @@ const TrackInfo = ({
       <div className="flex flex-1 items-center">
         <p className="w-10 p-2 text-right">{trackData.track_number}</p>
         <div className="flex flex-1">
-          {trackData.explicit && <MdExplicit className="h-4 w-4" />}
+          {trackData.explicit && <MdExplicit className="mr-1 h-4 w-4" />}
           <p className="font-bold">{trackData.name}</p>
         </div>
       </div>

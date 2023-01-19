@@ -11,7 +11,6 @@ import { trpc } from "../utils/trpc";
 import { NoUserModal } from "./NoUserModal";
 import AlbumPlaceholder from "../assets/AlbumPlaceholder.jpg";
 
-
 const AlbumInfoGrid = ({
   albumData,
   albumId,
@@ -73,6 +72,7 @@ const AlbumInfoGrid = ({
             likeAlbumQuery.mutate({
               userId: session?.user?.id || "",
               albumId: albumData?.id as string,
+              albumImage: albumData?.images[1]?.url,
             });
           }}
         >
@@ -128,54 +128,3 @@ const AlbumInfoGrid = ({
 };
 
 export default AlbumInfoGrid;
-
-{
-  /* <div className="grid grid-cols-3 grid-rows-3 border-b border-slate-600 sm:grid-cols-2">
-<div className="col-span-2 row-span-3 mx-auto my-6 text-center sm:col-span-1">
-  <Image
-    src={albumData?.images[0]?.url || ""}
-    alt="album cover"
-    className="rounded-xl"
-    height={240}
-    width={240}
-  />
-  <button
-    onClick={() => {
-      likeAlbumQuery.mutate({
-        userId: session?.user?.id || "",
-        albumId: albumData?.id as string,
-      });
-    }}
-  >
-    <HiOutlineHeart className="h-8 w-8 text-red-500" />
-  </button>
-</div>
-
-<div className="my-4 text-center">
-  <p className="text-md font-semibold underline underline-offset-4">
-    Artist
-  </p>
-  <p className="text-2xl font-bold">
-    {albumData?.artists
-      ?.map(function (artistinfo) {
-        return artistinfo.name;
-      })
-      .join(", ")}
-  </p>
-</div>
-<div className="my-4 text-center">
-  <p className="text-md font-semibold underline underline-offset-4">
-    Released
-  </p>
-  <p className="text-2xl font-bold">
-    {albumData?.release_date.slice(0, 4)}
-  </p>
-</div>
-<div className="my-4 text-center">
-  <p className="text-md font-semibold underline underline-offset-4">
-    Rating
-  </p>
-  <p className="text-2xl font-bold">N/A</p>
-</div>
-</div> */
-}

@@ -40,6 +40,8 @@ const SearchResults: NextPage = () => {
           topArtistResult?.name.toLowerCase().includes(searchText as string)
         ) {
           setTopResult(topAlbumResult);
+        } else {
+          setTopResult(topAlbumResult);
         }
       },
     }

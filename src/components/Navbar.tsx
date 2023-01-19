@@ -1,11 +1,7 @@
 import Image from "next/image";
 import Router from "next/router";
 import { useState } from "react";
-import {
-  HiHome,
-  HiOutlineX,
-  HiSearch,
-} from "react-icons/hi";
+import { HiHome, HiOutlineX, HiSearch } from "react-icons/hi";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { BsSoundwave } from "react-icons/bs";
 import { useSession, signIn, signOut } from "next-auth/react";
@@ -97,6 +93,13 @@ const Navbar = () => {
               tabIndex={0}
               className="dropdown-content menu rounded-box mt-4 w-52 bg-base-100 p-2 shadow"
             >
+              <li>
+                <button
+                  onClick={() => Router.push(`/user/${session?.user?.id}`)}
+                >
+                  Profile
+                </button>
+              </li>
               <li>
                 <button onClick={() => signOut()}>Sign out</button>
               </li>
