@@ -2,7 +2,12 @@ import Image from "next/image";
 import Router from "next/router";
 import type { LegacyRef } from "react";
 import { useState } from "react";
-import { HiArrowCircleLeft, HiOutlineX, HiSearch } from "react-icons/hi";
+import {
+  HiArrowCircleLeft,
+  HiHome,
+  HiOutlineX,
+  HiSearch,
+} from "react-icons/hi";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { BsSoundwave } from "react-icons/bs";
 import { useSession, signIn, signOut } from "next-auth/react";
@@ -14,8 +19,8 @@ const Navbar = () => {
 
   return (
     <nav className="mx-auto flex max-w-7xl items-center justify-between p-2">
-      <button className="pl-2" onClick={() => Router.back()}>
-        <HiArrowCircleLeft className="h-6 w-6" />
+      <button className="pl-2" onClick={() => Router.push("/")}>
+        <HiHome className="h-6 w-6" />
       </button>
       <button className="no-animation flex items-center gap-x-1 font-extrabold">
         <BsSoundwave /> INTUNE
@@ -78,9 +83,7 @@ const Navbar = () => {
               className="dropdown-content menu rounded-box mt-4 w-52 bg-base-100 p-2 shadow"
             >
               <li>
-                <button onClick={() => signOut()}>
-                  Sign out
-                </button>
+                <button onClick={() => signOut()}>Sign out</button>
               </li>
             </ul>
           </div>
