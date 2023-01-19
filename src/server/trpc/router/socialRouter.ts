@@ -94,4 +94,44 @@ export const socialRouter = router({
 
       return allReviews;
     }),
+  getUserInfo: publicProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+      })
+    )
+    .query(async ({ input, ctx }) => {
+      const userInfo = ctx.prisma.user.findFirst({
+        where: {
+          id: input.userId,
+        },
+        include: {
+          AlbumReviews: {
+            select: {
+              id: true,
+              albumId: true,
+              text: true,
+              likes: true,
+            },
+          },
+          UserAlbumLikes: {
+            select: {
+              id: true,
+              albumId: true,
+              albumImage: true,
+            },
+          },
+          UserAlbumRatings: {
+            select: {
+              id: true,
+              albumId: true,
+              rating: true,
+            },
+          },
+          
+        },
+      });
+
+      return userInfo;
+    }),
 });
