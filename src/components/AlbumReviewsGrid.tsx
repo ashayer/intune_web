@@ -19,7 +19,7 @@ const AlbumReviewsGrid = ({
   const { data: session, status } = useSession();
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col my-10">
       <NoUserModal showModal={showModal} setShowModal={setShowModal} />
 
       <button
@@ -68,7 +68,7 @@ const AlbumReviewsGrid = ({
         {albumReviews ? (
           albumReviews.map((review, index) => (
             <div key={index}>
-              <AlbumReview />
+              <AlbumReview review={review} />
             </div>
           ))
         ) : (

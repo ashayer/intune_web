@@ -138,18 +138,13 @@ export const albumRouter = router({
       return null;
     }),
   getAlbumReviewsById: publicProcedure
-    .input(z.object({ userId: z.string(), albumId: z.string() }))
+    .input(z.object({ albumId: z.string() }))
     .query(async ({ input, ctx }) => {
       const albums = await ctx.prisma.albumReviews.findMany({
         orderBy: {
           createdAt: "desc",
         },
         where: {
-          NOT: {
-            userId: {
-              equals: input.userId,
-            },
-          },
           albumId: {
             equals: input.albumId,
           },
