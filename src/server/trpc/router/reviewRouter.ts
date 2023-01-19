@@ -23,11 +23,30 @@ export const reviewRouter = router({
 
       return null;
     }),
+  getYourAlbumReview: publicProcedure
+    .input(z.object({ userId: z.string(), albumId: z.string() }))
+    .query(async ({ input, ctx }) => {
+      const albumReview = await ctx.prisma.albumReviews.findFirst({
+        where: {
+          AND: [{ userId: input.userId }, { albumId: input.albumId }],
+        },
+        select: {
+          id: true,
+          text: true,
+        },
+      });
+
+      if (albumReview !== null) {
+        return albumReview;
+      }
+
+      return null;
+    }),
   updateAlbumReview: publicProcedure
     .input(
       z.object({ userId: z.string(), albumId: z.string(), text: z.string() })
     )
-    .query(async ({ input, ctx }) => {
+    .mutation(async ({ input, ctx }) => {
       const userLike = await ctx.prisma.albumReviews.findFirst({
         where: {
           AND: [{ userId: input.userId }, { albumId: input.albumId }],
@@ -58,7 +77,7 @@ export const reviewRouter = router({
         reviewId: z.string(),
       })
     )
-    .query(async ({ input, ctx }) => {
+    .mutation(async ({ input, ctx }) => {
       const userReviewLike = await ctx.prisma.reviewLikes.findFirst({
         where: {
           AND: [

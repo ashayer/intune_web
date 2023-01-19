@@ -15,7 +15,7 @@ const AlbumDetails: NextPage = () => {
   const [tracklistInfo, setTracklistInfo] =
     useState<SpotifyApi.AlbumTracksResponse>();
 
-  const [bgColor, setbgColor] = useState("black");
+  const [bgColor, setBgColor] = useState("black");
   const [reviewsList, setReviewList] = useState();
 
   const { data: session } = useSession();
@@ -35,7 +35,7 @@ const AlbumDetails: NextPage = () => {
           imageComponent.onload = function () {
             const palette = analyzeImage(imageComponent);
             if (palette && palette[0]) {
-              setbgColor(rgbToHex(palette[0].r, palette[0].g, palette[0].b));
+              setBgColor(rgbToHex(palette[0].r, palette[0].g, palette[0].b));
             }
           };
         }

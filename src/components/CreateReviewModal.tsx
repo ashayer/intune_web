@@ -1,9 +1,8 @@
 import { useSession } from "next-auth/react";
 import type { Dispatch, SetStateAction } from "react";
 import { useState } from "react";
-import { HiChevronRight, HiPlusSm, HiX } from "react-icons/hi";
+import { HiX } from "react-icons/hi";
 import { trpc } from "../utils/trpc";
-import { NoUserModal } from "./NoUserModal";
 
 const CreateReviewModal = ({
   reviewModal,
@@ -15,13 +14,38 @@ const CreateReviewModal = ({
   albumId: string;
 }) => {
   const [reviewText, setReviewText] = useState("");
+
   const [reviewTextCount, setReviewCountText] = useState(0);
 
-  const { data: session } = useSession();
+  const [createOrUpdate, setCreateOrUpdate] = useState("create");
+
+  const { data: session, status } = useSession();
 
   const createReviewMutate = trpc.review.createAlbumReview.useMutation({
     onSuccess: () => setReviewModal(false),
   });
+
+  const updateReviewMutate = trpc.review.updateAlbumReview.useMutation({
+    onSuccess: () => setReviewModal(false),
+  });
+
+  const getYourAlbumReivewQuery = trpc.review.getYourAlbumReview.useQuery(
+    {
+      userId: session?.user?.id as string,
+      albumId: albumId,
+    },
+    {
+      enabled: status === "authenticated",
+      onSuccess: (data) => {
+        if (data) {
+          setCreateOrUpdate("update");
+          setReviewText(data.text);
+          setReviewCountText(data.text.length);
+        }
+      },
+      refetchOnWindowFocus: false,
+    }
+  );
 
   return (
     <>
@@ -36,9 +60,7 @@ const CreateReviewModal = ({
               title={reviewTextCount > 0 ? "Save and close" : "Close"}
               onClick={() => {
                 if (reviewTextCount > 0) {
-                  confirm(
-                    "Are you sure you want to do close this window, the text will be saved?"
-                  );
+                  confirm("Are you sure you want to close this window?");
                 }
                 setReviewModal((prev) => !prev);
               }}
@@ -70,21 +92,38 @@ const CreateReviewModal = ({
             >
               Reset
             </button>
-            <button
-              className="btn bg-green-500 font-bold text-white"
-              onClick={() => {
-                if (reviewText.length > 0) {
-                  createReviewMutate.mutate({
-                    userId: session?.user?.id as string,
-                    username: session?.user?.name as string,
-                    albumId: albumId,
-                    text: reviewText,
-                  });
-                }
-              }}
-            >
-              Post
-            </button>
+            {createOrUpdate === "create" ? (
+              <button
+                className="btn-sm btn bg-green-500 font-bold text-white"
+                onClick={() => {
+                  if (reviewText.length > 0) {
+                    createReviewMutate.mutate({
+                      userId: session?.user?.id as string,
+                      username: session?.user?.name as string,
+                      albumId: albumId,
+                      text: reviewText,
+                    });
+                  }
+                }}
+              >
+                Post
+              </button>
+            ) : (
+              <button
+                className="btn-sm btn bg-blue-500 font-bold text-white"
+                onClick={() => {
+                  if (reviewText.length > 0) {
+                    updateReviewMutate.mutate({
+                      userId: session?.user?.id as string,
+                      albumId: albumId,
+                      text: reviewText,
+                    });
+                  }
+                }}
+              >
+                Update
+              </button>
+            )}
           </div>
         </div>
       </div>
