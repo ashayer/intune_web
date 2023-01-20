@@ -1,13 +1,43 @@
 import type { AlbumReviews } from "@prisma/client";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useState } from "react";
-import { HiOutlineHeart } from "react-icons/hi";
+import { HiHeart, HiOutlineHeart } from "react-icons/hi";
+import { trpc } from "../utils/trpc";
+import { NoUserModal } from "./NoUserModal";
 
 const AlbumReview = ({ review }: { review: AlbumReviews }) => {
+  console.log(review.id);
   const [expandText, setExpandText] = useState(false);
+  const { data: session, status } = useSession();
+  const [showModal, setShowModal] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+
+  const likeReviewQuery = trpc.review.likeAlbumReview.useMutation({
+    onError: () => {
+      setShowModal(true);
+    },
+    onSuccess: (data) => {
+      checkIfReviewLikes.refetch();
+    },
+  });
+
+  const checkIfReviewLikes = trpc.review.checkAlbumReviewLike.useQuery(
+    {
+      reviewId: review.id,
+      userId: session?.user?.id as string,
+      albumId: review.albumId,
+    },
+    {
+      onSuccess: (data) => setIsLiked(data),
+      enabled: status === "authenticated",
+      refetchOnWindowFocus: false,
+    }
+  );
 
   return (
     <div className="flex border-b border-zinc-800 pb-2">
+      <NoUserModal showModal={showModal} setShowModal={setShowModal} />
       <div className="mx-2 flex flex-col items-center gap-y-2">
         <Image
           src={review.userImage}
@@ -16,8 +46,20 @@ const AlbumReview = ({ review }: { review: AlbumReviews }) => {
           width={50}
           className="w-8 rounded-full"
         />
-        <button className="hover:text-red-100">
-          <HiOutlineHeart className="h-6 w-6 " />
+        <button
+          onClick={() => {
+            likeReviewQuery.mutate({
+              userId: session?.user?.id as string,
+              albumId: review.albumId,
+              reviewId: review.id,
+            });
+          }}
+        >
+          {isLiked ? (
+            <HiHeart className="h-8 w-8 text-red-600" />
+          ) : (
+            <HiOutlineHeart className="h-8 w-8" />
+          )}
         </button>
         <p className="text-xs" title={`${review.likes} total likes`}>
           {review.likes}

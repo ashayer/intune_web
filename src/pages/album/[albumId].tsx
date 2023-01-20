@@ -221,7 +221,7 @@ const AlbumDetails: NextPage = () => {
                   )}
                 </div>
                 <AlbumReviewsGrid
-                  albumReviews={albumReviewsQuery.data?.slice(0, 15)}
+                  albumReviews={albumReviewsQuery.data?.slice(0, 1)}
                 />
               </div>
             )}

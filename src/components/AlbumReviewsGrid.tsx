@@ -18,7 +18,7 @@ const AlbumReviewsGrid = ({
       <div className="flex flex-[0.75] flex-col gap-y-2">
         {albumReviews ? (
           albumReviews.map((review, index) => (
-            <div key={index}>
+            <div key={review.id}>
               <AlbumReview review={review} />
             </div>
           ))

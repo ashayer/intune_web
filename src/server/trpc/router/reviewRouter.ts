@@ -24,6 +24,21 @@ export const reviewRouter = router({
 
       return null;
     }),
+  deleteReview: publicProcedure
+    .input(
+      z.object({
+        reviewId: z.string(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      await ctx.prisma.albumReviews.delete({
+        where: {
+          id: input.reviewId,
+        },
+      });
+
+      return null;
+    }),
   getYourAlbumReview: publicProcedure
     .input(z.object({ userId: z.string(), albumId: z.string() }))
     .query(async ({ input, ctx }) => {
@@ -84,30 +99,56 @@ export const reviewRouter = router({
           AND: [
             { userId: input.userId },
             { albumId: input.albumId },
-            { isLike: true },
+            { reviewId: input.reviewId },
           ],
         },
         select: {
           id: true,
-          albumId: true,
-          isLike: true,
         },
       });
+
+      console.log(userReviewLike);
+
       if (userReviewLike !== null) {
         await ctx.prisma.reviewLikes.delete({
           where: {
             id: userReviewLike.id,
           },
         });
+
+        await ctx.prisma.albumReviews.update({
+          where: {
+            id: input.reviewId,
+          },
+          data: {
+            likes: {
+              decrement: 1,
+            },
+          },
+        });
+        return false;
       } else {
         await ctx.prisma.reviewLikes.create({
           data: {
-            ...input,
+            userId: input.userId,
+            albumId: input.albumId,
+            reviewId: input.reviewId,
             isLike: true,
           },
         });
+
+        await ctx.prisma.albumReviews.update({
+          where: {
+            id: input.reviewId,
+          },
+          data: {
+            likes: {
+              increment: 1,
+            },
+          },
+        });
+        return true;
       }
-      return null;
     }),
   checkAlbumReviewLike: publicProcedure
     .input(
@@ -123,7 +164,7 @@ export const reviewRouter = router({
           AND: [
             { userId: input.userId },
             { albumId: input.albumId },
-            { isLike: true },
+            { reviewId: input.reviewId },
           ],
         },
         select: {
@@ -132,7 +173,7 @@ export const reviewRouter = router({
           isLike: true,
         },
       });
-      if (userReviewLike !== null) return userReviewLike.isLike;
+      if (userReviewLike !== null) return true;
       return false;
     }),
 });

@@ -80,12 +80,13 @@ model ReviewLikes {
   id          String       @unique @default(cuid())
   albumId     String
   userId      String
+  reviewId    String
   isLike      Boolean
-  albumReview AlbumReviews @relation(fields: [albumId], references: [id], onDelete: Cascade)
+  albumReview AlbumReviews @relation(fields: [reviewId], references: [id], onDelete: Cascade)
   user        User         @relation(fields: [userId], references: [id])
 
-  @@index([albumId])
   @@index([userId])
+  @@index([reviewId])
 }
 
 model FollowersList {

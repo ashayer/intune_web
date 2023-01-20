@@ -29,7 +29,7 @@ const CreateReviewModal = ({
     onSuccess: () => setReviewModal(false),
   });
 
-  const getYourAlbumReivewQuery = trpc.review.getYourAlbumReview.useQuery(
+  const getYourAlbumReviewQuery = trpc.review.getYourAlbumReview.useQuery(
     {
       userId: session?.user?.id as string,
       albumId: albumId,
@@ -46,6 +46,13 @@ const CreateReviewModal = ({
       refetchOnWindowFocus: false,
     }
   );
+
+  const deleteReview = trpc.review.deleteReview.useMutation({
+    onSuccess: () => {
+      getYourAlbumReviewQuery.refetch();
+      setReviewModal(false);
+    },
+  });
 
   return (
     <>
@@ -112,22 +119,38 @@ const CreateReviewModal = ({
                 Post
               </button>
             ) : (
-              <button
-                className={`btn-sm btn bg-blue-500 font-bold text-white ${
-                  updateReviewMutate.isLoading && "loading"
-                }`}
-                onClick={() => {
-                  if (reviewText.length > 0) {
-                    updateReviewMutate.mutate({
-                      userId: session?.user?.id as string,
-                      albumId: albumId,
-                      text: reviewText,
-                    });
-                  }
-                }}
-              >
-                Update
-              </button>
+              <>
+                <button
+                  className={`btn-sm btn bg-red-500 font-bold text-white ${
+                    updateReviewMutate.isLoading && "loading"
+                  }`}
+                  onClick={() => {
+                    if (reviewText.length > 0) {
+                      deleteReview.mutate({
+                        reviewId: getYourAlbumReviewQuery.data?.id as string,
+                      });
+                    }
+                  }}
+                >
+                  Delete
+                </button>
+                <button
+                  className={`btn-sm btn bg-blue-500 font-bold text-white ${
+                    updateReviewMutate.isLoading && "loading"
+                  }`}
+                  onClick={() => {
+                    if (reviewText.length > 0) {
+                      updateReviewMutate.mutate({
+                        userId: session?.user?.id as string,
+                        albumId: albumId,
+                        text: reviewText,
+                      });
+                    }
+                  }}
+                >
+                  Update
+                </button>
+              </>
             )}
           </div>
         </div>
