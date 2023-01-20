@@ -9,15 +9,14 @@ import loadingGif from "../../assets/loading.gif";
 import TracklistGrid from "../../components/TracklistGrid";
 import { useSession } from "next-auth/react";
 import { loadImage, analyzeImage, rgbToHex } from "../../assets/colorPicker";
-
+import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
 const AlbumDetails: NextPage = () => {
   const [albumData, setAlbumData] = useState<SpotifyApi.AlbumObjectFull>();
   const [tracklistInfo, setTracklistInfo] =
     useState<SpotifyApi.AlbumTracksResponse>();
 
   const [bgColor, setBgColor] = useState("black");
-  const [reviewsList, setReviewList] = useState();
-
+  const [skip, setSkip] = useState(0);
   const { data: session } = useSession();
 
   const nrouter = useRouter();
@@ -57,28 +56,25 @@ const AlbumDetails: NextPage = () => {
   const albumReviewsQuery = trpc.album.getAlbumReviewsById.useQuery(
     {
       albumId: albumId as string,
+      skip: skip,
     },
     {
       refetchOnWindowFocus: false,
     }
-    // {
-    //   onSuccess: (data) => setReviewList(data),
-    // }
   );
-
-  // console.log(albumStatsQuery.data?.albumAverageRating._avg.rating)
 
   return (
     <div
       style={{
         background: bgColor,
       }}
+      className="py-40"
     >
       <div
         className="mx-auto min-h-screen max-w-7xl"
         style={{
           backgroundColor: "#121212",
-          boxShadow: "0 0 40px 75px #121212",
+          boxShadow: "0 0 25px 75px #121212",
         }}
       >
         <main className="flex flex-col px-4 md:flex-row">
@@ -119,10 +115,38 @@ const AlbumDetails: NextPage = () => {
                 </div>
               </div>
             ) : (
-              <AlbumReviewsGrid
-                albumReviews={albumReviewsQuery.data}
-                albumId={albumId as string}
-              />
+              <div>
+                <AlbumReviewsGrid
+                  albumReviews={albumReviewsQuery.data?.slice(0, 15)}
+                  albumId={albumId as string}
+                />
+              </div>
+            )}
+            {albumReviewsQuery.data && (
+              <div className="flex justify-between py-4">
+                <button
+                  className="btn"
+                  disabled={skip === 0}
+                  onClick={() => {
+                    setSkip((prev) => prev - 15);
+                    albumReviewsQuery.refetch();
+                  }}
+                >
+                  <HiChevronLeft className="h-6 w-6" />
+                  Newer
+                </button>
+                <button
+                  className="btn"
+                  disabled={albumReviewsQuery.data?.length <= 15}
+                  onClick={() => {
+                    setSkip((prev) => prev + 15);
+                    albumReviewsQuery.refetch();
+                  }}
+                >
+                  Older
+                  <HiChevronRight className="h-6 w-6" />
+                </button>
+              </div>
             )}
           </div>
         </main>

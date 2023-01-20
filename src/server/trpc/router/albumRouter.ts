@@ -8,6 +8,7 @@ export const albumRouter = router({
       z.object({
         userId: z.string(),
         albumId: z.string(),
+        albumImage: z.string().nullish(),
       })
     )
     .mutation(async ({ input, ctx }) => {
@@ -41,6 +42,7 @@ export const albumRouter = router({
             albumId: input.albumId,
             userId: input.userId,
             isLike: true,
+            albumImage: input.albumImage,
           },
         });
 
@@ -138,43 +140,25 @@ export const albumRouter = router({
       return null;
     }),
   getAlbumReviewsById: publicProcedure
-    .input(z.object({ albumId: z.string() }))
+    .input(z.object({ albumId: z.string(), skip: z.number().nullish() }))
     .query(async ({ input, ctx }) => {
       const albums = await ctx.prisma.albumReviews.findMany({
-        orderBy: {
-          createdAt: "desc",
-        },
+        take: 16,
+        skip: input.skip || 0,
         where: {
           albumId: {
             equals: input.albumId,
           },
         },
-        take: 15,
-      });
-      if (albums.length > 0) return albums;
-      return null;
-    }),
-  getYourAlbumReview: publicProcedure
-    .input(z.object({ userId: z.string(), albumId: z.string() }))
-    .query(async ({ input, ctx }) => {
-      const yourAlbumReview = await ctx.prisma.albumReviews.findMany({
-        where: {
-          AND: [
-            {
-              albumId: {
-                equals: input.albumId,
-              },
-            },
-            {
-              userId: {
-                equals: input.userId,
-              },
-            },
-          ],
+        orderBy: {
+          createdAt: "desc",
         },
-        take: 15,
       });
-      return yourAlbumReview;
+
+      if (albums.length > 0) {
+        return albums;
+      }
+      return null;
     }),
   getAlbumStats: publicProcedure
     .input(z.object({ albumId: z.string() }))

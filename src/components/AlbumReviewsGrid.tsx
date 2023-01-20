@@ -19,6 +19,7 @@ const AlbumReviewsGrid = ({
   const [createOrUpdate, setCreateOrUpdate] = useState("create");
   const [getReviewText, setGetReviewText] = useState("");
   const { data: session, status } = useSession();
+
   const getYourAlbumReivewQuery = trpc.review.getYourAlbumReview.useQuery(
     {
       userId: session?.user?.id as string,
@@ -97,7 +98,7 @@ const AlbumReviewsGrid = ({
           </button>
         )}
       </div>
-      <div className="flex flex-[0.75] flex-col">
+      <div className="flex flex-[0.75] flex-col gap-y-2">
         {albumReviews ? (
           albumReviews.map((review, index) => (
             <div key={index}>
@@ -110,14 +111,6 @@ const AlbumReviewsGrid = ({
           </div>
         )}
       </div>
-      {albumReviews && (
-        <div className="py-4 text-end">
-          <button className="btn">
-            Older
-            <HiChevronRight className="h-6 w-6" />
-          </button>
-        </div>
-      )}
     </div>
   );
 };
