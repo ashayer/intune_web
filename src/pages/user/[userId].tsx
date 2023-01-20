@@ -34,7 +34,7 @@ const UserDetails: NextPage = () => {
         background: bgColor,
       }}
     >
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto min-h-screen max-w-7xl">
         <div className="flex flex-col items-center p-4 md:flex-row">
           <div className="flex flex-1 items-center p-4">
             <Image
@@ -45,6 +45,16 @@ const UserDetails: NextPage = () => {
               className="m-4 rounded-full"
             />
             <p className="text-xl font-bold">{session?.user?.name}</p>
+          </div>
+          <div className="flex gap-x-4">
+            <div className="flex flex-col text-center">
+              <p className="font-bold text-slate-400">Following</p>
+              <p>1212</p>
+            </div>
+            <div className="flex flex-col text-center">
+              <p className="font-bold text-slate-400">Followers</p>
+              <p>1212</p>
+            </div>
           </div>
           <div className="flex w-full justify-evenly text-center md:w-1/4">
             <div>
@@ -88,7 +98,7 @@ const UserDetails: NextPage = () => {
               </div>
               <div className="ml-4 flex-[0.75]">
                 <p
-                  className="w-full cursor overflow-hidden text-ellipsis text-sm text-slate-400"
+                  className="cursor w-full overflow-hidden text-ellipsis text-sm text-slate-400"
                   style={{
                     display: "-webkit-box",
                     WebkitLineClamp: 3,
