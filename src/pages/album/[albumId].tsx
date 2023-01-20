@@ -9,7 +9,14 @@ import loadingGif from "../../assets/loading.gif";
 import TracklistGrid from "../../components/TracklistGrid";
 import { useSession } from "next-auth/react";
 import { loadImage, analyzeImage, rgbToHex } from "../../assets/colorPicker";
-import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
+import {
+  HiChevronLeft,
+  HiChevronRight,
+  HiPencil,
+  HiPlusSm,
+} from "react-icons/hi";
+import CreateReviewModal from "../../components/CreateReviewModal";
+import { NoUserModal } from "../../components/NoUserModal";
 const AlbumDetails: NextPage = () => {
   const [albumData, setAlbumData] = useState<SpotifyApi.AlbumObjectFull>();
   const [tracklistInfo, setTracklistInfo] =
@@ -17,10 +24,30 @@ const AlbumDetails: NextPage = () => {
 
   const [bgColor, setBgColor] = useState("black");
   const [skip, setSkip] = useState(0);
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  const [reviewModal, setReviewModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [sortReviewsBy, setSortReviewsBy] = useState("recent");
+  const [createOrUpdate, setCreateOrUpdate] = useState("create");
 
   const nrouter = useRouter();
   const { albumId } = nrouter.query;
+
+  const getYourAlbumReivewQuery = trpc.review.getYourAlbumReview.useQuery(
+    {
+      userId: session?.user?.id as string,
+      albumId: albumId as string,
+    },
+    {
+      enabled: status === "authenticated",
+      onSuccess: (data) => {
+        if (data) {
+          setCreateOrUpdate("update");
+        }
+      },
+      refetchOnWindowFocus: false,
+    }
+  );
 
   const albumInfoQuery = trpc.search.getAlbumInfoById.useQuery(
     {
@@ -57,6 +84,7 @@ const AlbumDetails: NextPage = () => {
     {
       albumId: albumId as string,
       skip: skip,
+      sortBy: sortReviewsBy,
     },
     {
       refetchOnWindowFocus: false,
@@ -70,6 +98,8 @@ const AlbumDetails: NextPage = () => {
       }}
       className="py-40"
     >
+      <NoUserModal showModal={showModal} setShowModal={setShowModal} />
+
       <div
         className="mx-auto min-h-screen max-w-7xl"
         style={{
@@ -116,9 +146,82 @@ const AlbumDetails: NextPage = () => {
               </div>
             ) : (
               <div>
+                <CreateReviewModal
+                  reviewModal={reviewModal}
+                  setReviewModal={setReviewModal}
+                  albumId={albumId as string}
+                />
+                <div className="mx-auto mt-10 flex w-full flex-col items-end justify-end gap-y-4 md:flex-row">
+                  <div className="flex gap-x-4">
+                    <select
+                      className="select-bordered select select-sm mr-4"
+                      name="review-sort-select"
+                      onChange={(e) => setSortReviewsBy(e.target.value)}
+                      value={sortReviewsBy}
+                    >
+                      <option value="recent">Most recent</option>
+                      <option value="liked">Most liked</option>
+                    </select>
+                  </div>
+                  {createOrUpdate === "create" ? (
+                    <>
+                      <button
+                        onClick={() => {
+                          if (status === "unauthenticated") {
+                            setShowModal((prev) => !prev);
+                          } else {
+                            setReviewModal((prev) => !prev);
+                          }
+                        }}
+                        className="bg-green-6 00 invisible flex items-center rounded-xl bg-green-600 py-1 pr-4 pl-3 font-bold text-white md:visible"
+                      >
+                        <HiPlusSm className="h-6 w-6 text-white" /> Review
+                      </button>
+                      <button
+                        onClick={() => {
+                          if (status === "unauthenticated") {
+                            setShowModal((prev) => !prev);
+                          } else {
+                            setReviewModal((prev) => !prev);
+                          }
+                        }}
+                        className="btn-circle btn fixed bottom-0 left-1/2 mb-4 -translate-x-1/2 rounded-full border-2 bg-green-600  md:hidden"
+                      >
+                        <HiPlusSm className="h-10 w-10 text-white" />
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => {
+                          if (status === "unauthenticated") {
+                            setShowModal((prev) => !prev);
+                          } else {
+                            setReviewModal((prev) => !prev);
+                          }
+                        }}
+                        className="bg-green-6 00 invisible flex items-center rounded-xl bg-blue-600 py-1 pr-4 pl-3 font-bold text-white md:visible"
+                      >
+                        <HiPencil className="mr-2 h-4 w-4 text-white" />
+                        Edit your review
+                      </button>
+                      <button
+                        onClick={() => {
+                          if (status === "unauthenticated") {
+                            setShowModal((prev) => !prev);
+                          } else {
+                            setReviewModal((prev) => !prev);
+                          }
+                        }}
+                        className="btn-circle btn fixed bottom-0 left-1/2 mb-4 -translate-x-1/2 rounded-full border-2 bg-blue-600  md:hidden"
+                      >
+                        <HiPencil className="h-6 w-6 text-white" />
+                      </button>
+                    </>
+                  )}
+                </div>
                 <AlbumReviewsGrid
                   albumReviews={albumReviewsQuery.data?.slice(0, 15)}
-                  albumId={albumId as string}
                 />
               </div>
             )}

@@ -140,25 +140,49 @@ export const albumRouter = router({
       return null;
     }),
   getAlbumReviewsById: publicProcedure
-    .input(z.object({ albumId: z.string(), skip: z.number().nullish() }))
+    .input(
+      z.object({
+        albumId: z.string(),
+        skip: z.number().nullish(),
+        sortBy: z.string(),
+      })
+    )
     .query(async ({ input, ctx }) => {
-      const albums = await ctx.prisma.albumReviews.findMany({
-        take: 16,
-        skip: input.skip || 0,
-        where: {
-          albumId: {
-            equals: input.albumId,
+      if (input.sortBy === "recent") {
+        const albums = await ctx.prisma.albumReviews.findMany({
+          take: 16,
+          skip: input.skip || 0,
+          where: {
+            albumId: {
+              equals: input.albumId,
+            },
           },
-        },
-        orderBy: {
-          createdAt: "desc",
-        },
-      });
-
-      if (albums.length > 0) {
-        return albums;
+          orderBy: {
+            createdAt: "desc",
+          },
+        });
+        if (albums.length > 0) {
+          return albums;
+        }
+        return null;
+      } else {
+        const albums = await ctx.prisma.albumReviews.findMany({
+          take: 16,
+          skip: input.skip || 0,
+          where: {
+            albumId: {
+              equals: input.albumId,
+            },
+          },
+          orderBy: {
+            likes: "desc",
+          },
+        });
+        if (albums.length > 0) {
+          return albums;
+        }
+        return null;
       }
-      return null;
     }),
   getAlbumStats: publicProcedure
     .input(z.object({ albumId: z.string() }))
