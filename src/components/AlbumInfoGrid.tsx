@@ -24,9 +24,6 @@ const AlbumInfoGrid = ({
   const [isLiked, setIsLiked] = useState(false);
 
   const likeAlbumQuery = trpc.album.likeAlbum.useMutation({
-    onError: () => {
-      setShowModal(true);
-    },
     onSuccess: (data) => {
       setIsLiked(data);
       albumStatsQuery.refetch();
@@ -55,6 +52,8 @@ const AlbumInfoGrid = ({
     }
   );
 
+  console.log(albumData);
+
   return (
     <>
       <NoUserModal showModal={showModal} setShowModal={setShowModal} />
@@ -69,11 +68,17 @@ const AlbumInfoGrid = ({
 
         <button
           onClick={() => {
-            likeAlbumQuery.mutate({
-              userId: session?.user?.id || "",
-              albumId: albumData?.id as string,
-              albumImage: albumData?.images[1]?.url,
-            });
+            if (status === "unauthenticated") {
+              setShowModal((prev) => !prev);
+            } else {
+              likeAlbumQuery.mutate({
+                userId: session?.user?.id || "",
+                albumId: albumData?.id as string,
+                albumImage: albumData?.images[1]?.url as string,
+                userImage: session?.user?.image as string,
+                username: session?.user?.name as string,
+              });
+            }
           }}
         >
           {isLiked ? (

@@ -23,12 +23,10 @@ const Home: NextPage = () => {
 
   const { data: session, status } = useSession();
 
-
-
   return (
     <>
       <main className="mx-auto flex max-w-7xl flex-col items-center">
-        <RecentActivity />
+        {status === "authenticated" && <RecentActivity />}
         {getPopularQuery.isLoading ? (
           <div className="relative flex h-screen items-center">
             <div className="h-24 w-24 animate-pulse">
@@ -42,7 +40,7 @@ const Home: NextPage = () => {
                 popular this week
               </p>
               <PopularGrid popularData={popularData} type="album" />
-              <PopularGrid popularData={popularData} type="artist" />
+              {/* <PopularGrid popularData={popularData} type="artist" /> */}
             </div>
           </div>
         )}

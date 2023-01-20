@@ -9,11 +9,11 @@ export const albumRouter = router({
         userId: z.string(),
         albumId: z.string(),
         albumImage: z.string().nullish(),
+        userImage: z.string(),
+        username: z.string(),
       })
     )
     .mutation(async ({ input, ctx }) => {
-      if (!input.userId) throw new Error("Not signed in");
-
       const userLike = await ctx.prisma.userAlbumLikes.findFirst({
         where: {
           AND: [
@@ -43,6 +43,8 @@ export const albumRouter = router({
             userId: input.userId,
             isLike: true,
             albumImage: input.albumImage,
+            userImage: input.userImage,
+            username: input.username,
           },
         });
 
