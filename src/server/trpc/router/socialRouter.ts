@@ -98,6 +98,7 @@ export const socialRouter = router({
     .input(
       z.object({
         userId: z.string(),
+        skip: z.number().nullish(),
       })
     )
     .query(async ({ input, ctx }) => {
@@ -112,7 +113,15 @@ export const socialRouter = router({
               albumId: true,
               text: true,
               likes: true,
+              albumImage: true,
+              albumName: true,
+              userImage: true,
             },
+            orderBy: {
+              createdAt: "desc",
+            },
+            take: 6,
+            skip: input.skip || 0,
           },
           UserAlbumLikes: {
             select: {
@@ -120,6 +129,11 @@ export const socialRouter = router({
               albumId: true,
               albumImage: true,
             },
+            orderBy: {
+              createdAt: "desc",
+            },
+            take: 6,
+            skip: input.skip || 0,
           },
           UserAlbumRatings: {
             select: {
@@ -127,8 +141,12 @@ export const socialRouter = router({
               albumId: true,
               rating: true,
             },
+            orderBy: {
+              createdAt: "desc",
+            },
+            take: 6,
+            skip: input.skip || 0,
           },
-          
         },
       });
 

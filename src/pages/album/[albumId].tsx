@@ -149,7 +149,9 @@ const AlbumDetails: NextPage = () => {
                 <CreateReviewModal
                   reviewModal={reviewModal}
                   setReviewModal={setReviewModal}
-                  albumId={albumId as string}
+                  albumId={albumData?.id as string}
+                  albumImage={albumData?.images[1]?.url as string}
+                  albumName={albumData?.name as string}
                   albumReviewsQuery={albumReviewsQuery}
                 />
                 <div className="mx-auto mt-10 flex w-full flex-col items-end justify-end gap-y-4 md:flex-row">

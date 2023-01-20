@@ -8,11 +8,15 @@ const CreateReviewModal = ({
   reviewModal,
   setReviewModal,
   albumId,
+  albumImage,
+  albumName,
   albumReviewsQuery,
 }: {
   reviewModal: boolean;
   setReviewModal: Dispatch<SetStateAction<boolean>>;
   albumId: string;
+  albumImage: string;
+  albumName: string;
   albumReviewsQuery: any;
 }) => {
   const [reviewText, setReviewText] = useState("");
@@ -120,9 +124,11 @@ const CreateReviewModal = ({
                     createReviewMutate.mutate({
                       userId: session?.user?.id as string,
                       username: session?.user?.name as string,
-                      albumId: albumId,
-                      text: reviewText,
                       userImage: session?.user?.image as string,
+                      albumId: albumId,
+                      albumImage: albumImage,
+                      albumName: albumName,
+                      text: reviewText,
                     });
                   }
                 }}

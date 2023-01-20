@@ -6,11 +6,13 @@ export const reviewRouter = router({
   createAlbumReview: publicProcedure
     .input(
       z.object({
-        userId: z.string(),
-        username: z.string(),
         albumId: z.string(),
-        text: z.string().min(1).max(4000),
+        albumImage: z.string(),
+        albumName: z.string(),
+        userId: z.string(),
         userImage: z.string(),
+        username: z.string(),
+        text: z.string().min(1).max(4000),
       })
     )
     .mutation(async ({ input, ctx }) => {

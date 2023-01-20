@@ -64,6 +64,8 @@ model VerificationToken {
 model AlbumReviews {
   id          String        @unique @default(cuid())
   albumId     String
+  albumImage  String
+  albumName   String
   userId      String
   userImage   String
   username    String

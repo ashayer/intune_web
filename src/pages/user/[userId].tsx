@@ -2,10 +2,16 @@ import { type NextPage } from "next";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import Router from "next/router";
 import { useState } from "react";
 import { trpc } from "../../utils/trpc";
-import { loadImage, analyzeImage, rgbToHex } from "../../assets/colorPicker";
-import { HiDocumentText, HiHeart, HiStar } from "react-icons/hi";
+import {
+  HiChevronLeft,
+  HiChevronRight,
+  HiDocumentText,
+  HiHeart,
+  HiStar,
+} from "react-icons/hi";
 
 const UserDetails: NextPage = () => {
   const { data: session } = useSession();
@@ -15,9 +21,11 @@ const UserDetails: NextPage = () => {
   const nrouter = useRouter();
 
   const { userId } = nrouter.query;
+  const [skip, setSkip] = useState(0);
 
   const userInfo = trpc.social.getUserInfo.useQuery({
     userId: session?.user?.id as string,
+    skip: skip,
   });
 
   return (
@@ -25,10 +33,9 @@ const UserDetails: NextPage = () => {
       style={{
         background: bgColor,
       }}
-      className="border"
     >
-      <div className="mx-auto max-w-7xl border">
-        <div className="flex flex-col items-center border p-4 md:flex-row">
+      <div className="mx-auto max-w-7xl">
+        <div className="flex flex-col items-center p-4 md:flex-row">
           <div className="flex flex-1 items-center p-4">
             <Image
               src={session?.user?.image as string}
@@ -54,10 +61,82 @@ const UserDetails: NextPage = () => {
             </div>
           </div>
         </div>
-        <div>
-          {userInfo.data?.AlbumReviews.map((review, index) => (
-            <div key={index}>
-              <div className="flex border-b border-zinc-800 pb-2">
+        <div className="flex flex-col gap-y-2 px-4">
+          {userInfo.data?.AlbumReviews.slice(0, 5).map((review) => (
+            <div className="flex flex-row" key={review.id}>
+              <div className="flex flex-[0.15] flex-col items-center text-center">
+                <button
+                  className="h-full transition-all hover:scale-95"
+                  onClick={() => Router.push(`/album/${review.albumId}`)}
+                >
+                  <Image
+                    title={review.albumName}
+                    src={review.albumImage}
+                    alt="album cover"
+                    width={64}
+                    height={64}
+                    className="rounded-xl"
+                  />
+                </button>
+                <p className="text-sm">{review.albumName}</p>
+                {userInfo.data?.UserAlbumLikes.some(
+                  (likes) => likes.albumId === review.albumId
+                ) && <HiHeart className="h-8 w-8 text-red-500" />}
+                {userInfo.data?.UserAlbumRatings.some(
+                  (rating) => rating.albumId === review.albumId
+                ) && <p>stars here</p>}
+              </div>
+              <div className="ml-4 flex-[0.75]">
+                <p
+                  className="w-full cursor overflow-hidden text-ellipsis text-sm text-slate-400"
+                  style={{
+                    display: "-webkit-box",
+                    WebkitLineClamp: 3,
+                    WebkitBoxOrient: "vertical",
+                    wordBreak: "break-all",
+                  }}
+                >
+                  {review.text}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+        {userInfo.data && (
+          <div className="flex justify-between py-4">
+            <button
+              className="btn"
+              disabled={skip === 0}
+              onClick={() => {
+                setSkip((prev) => prev - 5);
+                userInfo.refetch();
+              }}
+            >
+              <HiChevronLeft className="h-6 w-6" />
+              Newer
+            </button>
+            <button
+              className="btn"
+              disabled={userInfo.data?.AlbumReviews.length <= 5}
+              onClick={() => {
+                setSkip((prev) => prev + 5);
+                userInfo.refetch();
+              }}
+            >
+              Older
+              <HiChevronRight className="h-6 w-6" />
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default UserDetails;
+
+{
+  /* <div className="flex border-b border-zinc-800 pb-2">
                 <div className="mx-2 flex flex-col items-center gap-y-2">
                   <Image
                     src={session?.user?.image as string}
@@ -75,23 +154,16 @@ const UserDetails: NextPage = () => {
                 </div>
                 <div className="flex flex-col">
                   <p
-                    className=" overflow-hidden text-ellipsis text-sm text-slate-400"
+                    className=" cursor-pointer overflow-hidden text-ellipsis text-sm text-slate-400"
                     style={{
                       display: "-webkit-box",
                       WebkitLineClamp: 3,
                       WebkitBoxOrient: "vertical",
+                      wordBreak: "break-all",
                     }}
                   >
                     {review.text}
                   </p>
                 </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default UserDetails;
+              </div> */
+}
