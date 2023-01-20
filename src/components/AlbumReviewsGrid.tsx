@@ -40,62 +40,76 @@ const AlbumReviewsGrid = ({
     <div className="my-10 flex flex-col">
       <NoUserModal showModal={showModal} setShowModal={setShowModal} />
 
-      <button
-        onClick={() => {
-          if (status === "unauthenticated") {
-            setShowModal((prev) => !prev);
-          } else {
-            setReviewModal((prev) => !prev);
-          }
-        }}
-        className="btn-circle btn fixed bottom-0 left-1/2 mb-4 -translate-x-1/2 rounded-full border-2 bg-green-600  md:hidden"
-      >
-        <HiPlusSm className="h-10 w-10 text-white" />
-      </button>
       <CreateReviewModal
         reviewModal={reviewModal}
         setReviewModal={setReviewModal}
         albumId={albumId as string}
       />
-      <div className="mx-auto mt-10 flex w-full flex-col items-end justify-between gap-y-4 md:flex-row">
-        <div>
-          {/* <select className="select-bordered select select-sm mr-4">
-
-            <option>Han Solo</option>
-            <option>Greedo</option>
+      <div className="mx-auto mt-10 flex w-full flex-col items-end justify-end gap-y-4 md:flex-row">
+        <div className="flex gap-x-4">
+          <select
+            className="select-bordered select select-sm mr-4"
+            name="review-sort-select"
+          >
+            <option value="recent">Most recent</option>
+            <option value="liked">Most liked</option>
           </select>
-          <select className="select-bordered select select-sm">
-            <option>Han Solo</option>
-            <option>Greedo</option>
-          </select> */}
         </div>
         {createOrUpdate === "create" ? (
-          <button
-            onClick={() => {
-              if (status === "unauthenticated") {
-                setShowModal((prev) => !prev);
-              } else {
-                setReviewModal((prev) => !prev);
-              }
-            }}
-            className="bg-green-6 00 invisible flex items-center rounded-xl bg-green-600 py-1 pr-4 pl-3 font-bold text-white md:visible"
-          >
-            <HiPlusSm className="h-6 w-6 text-white" /> Review
-          </button>
+          <>
+            <button
+              onClick={() => {
+                if (status === "unauthenticated") {
+                  setShowModal((prev) => !prev);
+                } else {
+                  setReviewModal((prev) => !prev);
+                }
+              }}
+              className="bg-green-6 00 invisible flex items-center rounded-xl bg-green-600 py-1 pr-4 pl-3 font-bold text-white md:visible"
+            >
+              <HiPlusSm className="h-6 w-6 text-white" /> Review
+            </button>
+            <button
+              onClick={() => {
+                if (status === "unauthenticated") {
+                  setShowModal((prev) => !prev);
+                } else {
+                  setReviewModal((prev) => !prev);
+                }
+              }}
+              className="btn-circle btn fixed bottom-0 left-1/2 mb-4 -translate-x-1/2 rounded-full border-2 bg-green-600  md:hidden"
+            >
+              <HiPlusSm className="h-10 w-10 text-white" />
+            </button>
+          </>
         ) : (
-          <button
-            onClick={() => {
-              if (status === "unauthenticated") {
-                setShowModal((prev) => !prev);
-              } else {
-                setReviewModal((prev) => !prev);
-              }
-            }}
-            className="bg-green-6 00 invisible flex items-center rounded-xl bg-blue-600 py-1 pr-4 pl-3 font-bold text-white md:visible"
-          >
-            <HiPencil className="mr-2 h-4 w-4 text-white" />
-            Edit your review
-          </button>
+          <>
+            <button
+              onClick={() => {
+                if (status === "unauthenticated") {
+                  setShowModal((prev) => !prev);
+                } else {
+                  setReviewModal((prev) => !prev);
+                }
+              }}
+              className="bg-green-6 00 invisible flex items-center rounded-xl bg-blue-600 py-1 pr-4 pl-3 font-bold text-white md:visible"
+            >
+              <HiPencil className="mr-2 h-4 w-4 text-white" />
+              Edit your review
+            </button>
+            <button
+              onClick={() => {
+                if (status === "unauthenticated") {
+                  setShowModal((prev) => !prev);
+                } else {
+                  setReviewModal((prev) => !prev);
+                }
+              }}
+              className="btn-circle btn fixed bottom-0 left-1/2 mb-4 -translate-x-1/2 rounded-full border-2 bg-blue-600  md:hidden"
+            >
+              <HiPencil className="h-6 w-6 text-white" />
+            </button>
+          </>
         )}
       </div>
       <div className="flex flex-[0.75] flex-col gap-y-2">
