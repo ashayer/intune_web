@@ -1,6 +1,7 @@
 import type { AlbumReviews } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import Router from "next/router";
 import { useState } from "react";
 import { HiHeart, HiOutlineHeart } from "react-icons/hi";
 import { trpc } from "../utils/trpc";
@@ -70,10 +71,15 @@ const AlbumReview = ({ review }: { review: AlbumReviews }) => {
         </p>
       </div>
       <div className="flex w-full flex-col justify-between">
-        <div className="flex ">
-          <p className="text-xs font-semibold text-slate-300">
+        <div className="flex">
+          <a
+            className="cursor-pointer text-xs font-semibold text-slate-300 hover:text-slate-500"
+            onClick={() => {
+              Router.push(`/user/${review.userId}`);
+            }}
+          >
             {review?.username}
-          </p>
+          </a>
         </div>
         <p
           className=" cursor-pointer overflow-hidden text-ellipsis text-sm text-slate-400"

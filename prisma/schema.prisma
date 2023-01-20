@@ -107,6 +107,8 @@ model UserAlbumLikes {
   id         String   @unique @default(cuid())
   albumId    String
   userId     String
+  userImage  String
+  username   String
   isLike     Boolean
   albumImage String?
   createdAt  DateTime @default(now())

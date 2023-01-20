@@ -10,7 +10,7 @@ export const socialRouter = router({
         userToFollowId: z.string(),
       })
     )
-    .query(async ({ input, ctx }) => {
+    .mutation(async ({ input, ctx }) => {
       const userIsFollowing = await ctx.prisma.followersList.findFirst({
         where: {
           AND: [
@@ -149,7 +149,31 @@ export const socialRouter = router({
           },
         },
       });
-
       return userInfo;
+    }),
+  getFollowInfo: publicProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+        skip: z.number().nullish(),
+      })
+    )
+    .query(async ({ input, ctx }) => {
+      const userIsFollowingCount = await ctx.prisma.followersList.count({
+        where: {
+          userId: input.userId,
+        },
+      });
+
+      const userFollowersCount = await ctx.prisma.followersList.count({
+        where: {
+          followingUserId: input.userId,
+        },
+      });
+
+      return {
+        userFollowersCount,
+        userIsFollowingCount
+      };
     }),
 });
