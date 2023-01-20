@@ -7,7 +7,6 @@ import { trpc } from "../utils/trpc";
 import { NoUserModal } from "./NoUserModal";
 
 const AlbumReview = ({ review }: { review: AlbumReviews }) => {
-  console.log(review.id);
   const [expandText, setExpandText] = useState(false);
   const { data: session, status } = useSession();
   const [showModal, setShowModal] = useState(false);
@@ -19,6 +18,7 @@ const AlbumReview = ({ review }: { review: AlbumReviews }) => {
     },
     onSuccess: (data) => {
       checkIfReviewLikes.refetch();
+      getReviewLikesTotal.refetch();
     },
   });
 
@@ -34,6 +34,10 @@ const AlbumReview = ({ review }: { review: AlbumReviews }) => {
       refetchOnWindowFocus: false,
     }
   );
+
+  const getReviewLikesTotal = trpc.review.checkReviewLikes.useQuery({
+    reviewId: review.id,
+  });
 
   return (
     <div className="flex border-b border-zinc-800 pb-2">
@@ -62,7 +66,7 @@ const AlbumReview = ({ review }: { review: AlbumReviews }) => {
           )}
         </button>
         <p className="text-xs" title={`${review.likes} total likes`}>
-          {review.likes}
+          {getReviewLikesTotal.data?.likes}
         </p>
       </div>
       <div className="flex w-full flex-col justify-between">

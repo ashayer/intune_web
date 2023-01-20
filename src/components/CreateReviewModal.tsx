@@ -8,10 +8,12 @@ const CreateReviewModal = ({
   reviewModal,
   setReviewModal,
   albumId,
+  albumReviewsQuery,
 }: {
   reviewModal: boolean;
   setReviewModal: Dispatch<SetStateAction<boolean>>;
   albumId: string;
+  albumReviewsQuery: any;
 }) => {
   const [reviewText, setReviewText] = useState("");
 
@@ -22,11 +24,19 @@ const CreateReviewModal = ({
   const { data: session, status } = useSession();
 
   const createReviewMutate = trpc.review.createAlbumReview.useMutation({
-    onSuccess: () => setReviewModal(false),
+    onSuccess: () => {
+      setReviewModal(false);
+      albumReviewsQuery.refetch();
+      getYourAlbumReviewQuery.refetch();
+    },
   });
 
   const updateReviewMutate = trpc.review.updateAlbumReview.useMutation({
-    onSuccess: () => setReviewModal(false),
+    onSuccess: () => {
+      setReviewModal(false);
+      albumReviewsQuery.refetch();
+      getYourAlbumReviewQuery.refetch();
+    },
   });
 
   const getYourAlbumReviewQuery = trpc.review.getYourAlbumReview.useQuery(
@@ -49,6 +59,7 @@ const CreateReviewModal = ({
 
   const deleteReview = trpc.review.deleteReview.useMutation({
     onSuccess: () => {
+      albumReviewsQuery.refetch();
       getYourAlbumReviewQuery.refetch();
       setReviewModal(false);
     },
@@ -122,7 +133,7 @@ const CreateReviewModal = ({
               <>
                 <button
                   className={`btn-sm btn bg-red-500 font-bold text-white ${
-                    updateReviewMutate.isLoading && "loading"
+                    deleteReview.isLoading && "loading"
                   }`}
                   onClick={() => {
                     if (reviewText.length > 0) {

@@ -176,4 +176,21 @@ export const reviewRouter = router({
       if (userReviewLike !== null) return true;
       return false;
     }),
+  checkReviewLikes: publicProcedure
+    .input(
+      z.object({
+        reviewId: z.string(),
+      })
+    )
+    .query(async ({ input, ctx }) => {
+      const totalLikes = await ctx.prisma.albumReviews.findFirst({
+        where: {
+          id: input.reviewId,
+        },
+        select: {
+          likes: true,
+        },
+      });
+      return totalLikes;
+    }),
 });

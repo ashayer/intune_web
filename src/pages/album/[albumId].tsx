@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { trpc } from "../../utils/trpc";
 import AlbumInfoGrid from "../../components/AlbumInfoGrid";
 import AlbumReviewsGrid from "../../components/AlbumReviewsGrid";
-import * as NextImage from "next/image";
+import Image from "next/image";
 import loadingGif from "../../assets/loading.gif";
 import TracklistGrid from "../../components/TracklistGrid";
 import { useSession } from "next-auth/react";
@@ -17,14 +17,14 @@ import {
 } from "react-icons/hi";
 import CreateReviewModal from "../../components/CreateReviewModal";
 import { NoUserModal } from "../../components/NoUserModal";
+
 const AlbumDetails: NextPage = () => {
+  const { data: session, status } = useSession();
   const [albumData, setAlbumData] = useState<SpotifyApi.AlbumObjectFull>();
   const [tracklistInfo, setTracklistInfo] =
     useState<SpotifyApi.AlbumTracksResponse>();
-
   const [bgColor, setBgColor] = useState("black");
   const [skip, setSkip] = useState(0);
-  const { data: session, status } = useSession();
   const [reviewModal, setReviewModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [sortReviewsBy, setSortReviewsBy] = useState("recent");
@@ -115,7 +115,7 @@ const AlbumDetails: NextPage = () => {
             {albumInfoQuery.isLoading && !albumInfoQuery.isSuccess ? (
               <div className="flex h-screen items-center justify-center">
                 <div className="h-24 w-24 animate-pulse">
-                  <NextImage.default src={loadingGif} alt="" />
+                  <Image src={loadingGif} alt="" />
                 </div>
               </div>
             ) : (
@@ -129,7 +129,7 @@ const AlbumDetails: NextPage = () => {
             {albumTracksQuery.isLoading && !albumTracksQuery.isSuccess ? (
               <div className="flex items-center justify-center">
                 <div className="h-24 w-24 animate-pulse">
-                  <NextImage.default src={loadingGif} alt="" />
+                  <Image src={loadingGif} alt="" />
                 </div>
               </div>
             ) : (
@@ -141,7 +141,7 @@ const AlbumDetails: NextPage = () => {
             {albumReviewsQuery.isLoading && !albumReviewsQuery.isSuccess ? (
               <div className="flex h-screen items-center justify-center">
                 <div className="h-24 w-24 animate-pulse">
-                  <NextImage.default src={loadingGif} alt="" />
+                  <Image src={loadingGif} alt="" />
                 </div>
               </div>
             ) : (
@@ -150,6 +150,7 @@ const AlbumDetails: NextPage = () => {
                   reviewModal={reviewModal}
                   setReviewModal={setReviewModal}
                   albumId={albumId as string}
+                  albumReviewsQuery={albumReviewsQuery}
                 />
                 <div className="mx-auto mt-10 flex w-full flex-col items-end justify-end gap-y-4 md:flex-row">
                   <div className="flex gap-x-4">
@@ -221,7 +222,7 @@ const AlbumDetails: NextPage = () => {
                   )}
                 </div>
                 <AlbumReviewsGrid
-                  albumReviews={albumReviewsQuery.data?.slice(0, 1)}
+                  albumReviews={albumReviewsQuery.data?.slice(0, 15)}
                 />
               </div>
             )}
