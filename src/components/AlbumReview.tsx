@@ -20,8 +20,8 @@ const AlbumReview = ({ review }: { review: AlbumReviews }) => {
           {review.likes}
         </p>
       </div>
-      <div className="flex flex-col">
-        <div className="flex">
+      <div className="flex w-full flex-col justify-between ">
+        <div className="flex ">
           <p className="text-xs font-semibold text-slate-300">
             {review?.username}
           </p>
@@ -36,6 +36,11 @@ const AlbumReview = ({ review }: { review: AlbumReviews }) => {
         >
           {review.text}
         </p>
+        <div className="w-full text-right">
+          <p className="w-full text-sm text-slate-400">
+            {review.createdAt.toLocaleDateString()}
+          </p>
+        </div>
       </div>
     </div>
   );
