@@ -97,37 +97,21 @@ const UserDetails: NextPage = () => {
             <p>{userInfo.data?.AlbumReviews.length}</p>
           </div>
         </div>
-        {userId !== session?.user?.id &&
-          status === "authenticated" &&
-          (isFollowing ? (
-            <button
-              className={`btn-sm btn my-10 bg-red-500 text-white ${
-                followUser.isLoading && "loading"
-              }`}
-              onClick={() => {
-                followUser.mutate({
-                  userId: session?.user?.id as string,
-                  userToFollowId: userId as string,
-                });
-              }}
-            >
-              Unfollow
-            </button>
-          ) : (
-            <button
-              className={`btn-sm btn my-10 bg-green-500 text-white ${
-                followUser.isLoading && "loading"
-              }`}
-              onClick={() => {
-                followUser.mutate({
-                  userId: session?.user?.id as string,
-                  userToFollowId: userId as string,
-                });
-              }}
-            >
-              Follow
-            </button>
-          ))}
+        {userId !== session?.user?.id && status === "authenticated" && (
+          <button
+            className={`btn-sm btn my-10 text-white ${
+              followUser.isLoading && "loading"
+            } ${isFollowing ? "bg-red-500" : "bg-green-500"}`}
+            onClick={() => {
+              followUser.mutate({
+                userId: session?.user?.id as string,
+                userToFollowId: userId as string,
+              });
+            }}
+          >
+            {isFollowing ? "Unfollow" : "Follow"}
+          </button>
+        )}
       </div>
       <div className="flex flex-col gap-y-2 px-4">
         <p className="w-full text-center text-xl font-bold text-slate-300">

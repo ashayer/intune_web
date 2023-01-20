@@ -5,6 +5,10 @@ import type { PopularChartResponse } from "../types/popular";
 import PopularGrid from "../components/PopularGrid";
 import loadingGif from "../assets/loading.gif";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
+import Router from "next/router";
+import RecentActivity from "../components/RecentActivity";
+
 const Home: NextPage = () => {
   const [popularData, setPopularData] = useState<PopularChartResponse>(
     {} as PopularChartResponse
@@ -17,9 +21,14 @@ const Home: NextPage = () => {
     }
   );
 
+  const { data: session, status } = useSession();
+
+
+
   return (
     <>
       <main className="mx-auto flex max-w-7xl flex-col items-center">
+        <RecentActivity />
         {getPopularQuery.isLoading ? (
           <div className="relative flex h-screen items-center">
             <div className="h-24 w-24 animate-pulse">
@@ -38,6 +47,7 @@ const Home: NextPage = () => {
           </div>
         )}
       </main>
+      <div className="mx-auto flex max-w-7xl flex-col items-center"></div>
     </>
   );
 };

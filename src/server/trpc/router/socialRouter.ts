@@ -90,6 +90,7 @@ export const socialRouter = router({
         orderBy: {
           createdAt: "desc",
         },
+        take: 10,
       });
 
       return allReviews;
@@ -173,7 +174,7 @@ export const socialRouter = router({
 
       return {
         userFollowersCount,
-        userIsFollowingCount
+        userIsFollowingCount,
       };
     }),
 });
