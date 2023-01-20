@@ -1,8 +1,11 @@
 import type { AlbumReviews } from "@prisma/client";
 import Image from "next/image";
+import { useState } from "react";
 import { HiOutlineHeart } from "react-icons/hi";
 
 const AlbumReview = ({ review }: { review: AlbumReviews }) => {
+  const [expandText, setExpandText] = useState(false);
+
   return (
     <div className="flex border-b border-zinc-800 pb-2">
       <div className="mx-2 flex flex-col items-center gap-y-2">
@@ -20,19 +23,21 @@ const AlbumReview = ({ review }: { review: AlbumReviews }) => {
           {review.likes}
         </p>
       </div>
-      <div className="flex w-full flex-col justify-between ">
+      <div className="flex w-full flex-col justify-between">
         <div className="flex ">
           <p className="text-xs font-semibold text-slate-300">
             {review?.username}
           </p>
         </div>
         <p
-          className=" overflow-hidden text-ellipsis text-sm text-slate-400"
+          className=" cursor-pointer overflow-hidden text-ellipsis text-sm text-slate-400"
           style={{
             display: "-webkit-box",
-            WebkitLineClamp: 3,
+            WebkitLineClamp: expandText ? 100 : 3,
             WebkitBoxOrient: "vertical",
+            wordBreak: "break-all",
           }}
+          onClick={() => setExpandText((prev) => true)}
         >
           {review.text}
         </p>
