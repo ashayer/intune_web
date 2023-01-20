@@ -14,7 +14,7 @@ import {
 } from "react-icons/hi";
 
 const UserDetails: NextPage = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   const [bgColor, setBgColor] = useState("");
 
@@ -24,27 +24,30 @@ const UserDetails: NextPage = () => {
   const [skip, setSkip] = useState(0);
 
   const userInfo = trpc.social.getUserInfo.useQuery({
-    userId: session?.user?.id as string,
+    userId: userId as string,
     skip: skip,
   });
 
   return (
-    <div
-      style={{
-        background: bgColor,
-      }}
-    >
+
       <div className="mx-auto min-h-screen max-w-7xl">
         <div className="flex flex-col items-center p-4 md:flex-row">
           <div className="flex flex-1 items-center p-4">
-            <Image
-              src={session?.user?.image as string}
-              alt="User Profile"
-              width={96}
-              height={96}
-              className="m-4 rounded-full"
-            />
-            <p className="text-xl font-bold">{session?.user?.name}</p>
+            <div className="flex flex-col px-4">
+              <Image
+                src={userInfo.data?.image as string}
+                alt="User Profile"
+                width={96}
+                height={96}
+                className="m-4 rounded-full"
+              />
+              {userId !== session?.user?.id && status === "authenticated" && (
+                <button className="btn-sm btn bg-purple-500 text-white">
+                  Follow
+                </button>
+              )}
+            </div>
+            <p className="text-xl font-bold">{userInfo.data?.name}</p>
           </div>
           <div className="flex gap-x-4">
             <div className="flex flex-col text-center">
@@ -72,6 +75,9 @@ const UserDetails: NextPage = () => {
           </div>
         </div>
         <div className="flex flex-col gap-y-2 px-4">
+          <p className="w-full text-center text-xl font-bold text-slate-300">
+            Reviews
+          </p>
           {userInfo.data?.AlbumReviews.slice(0, 5).map((review) => (
             <div className="flex flex-row" key={review.id}>
               <div className="flex flex-[0.15] flex-col items-center text-center">
@@ -139,7 +145,6 @@ const UserDetails: NextPage = () => {
           </div>
         )}
       </div>
-    </div>
   );
 };
 
