@@ -1,17 +1,9 @@
 import { type NextPage } from "next";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Router from "next/router";
-import { useState } from "react";
 import { trpc } from "../../../utils/trpc";
-import {
-  HiChevronLeft,
-  HiChevronRight,
-  HiDocumentText,
-  HiHeart,
-  HiStar,
-} from "react-icons/hi";
+
 import loadingGif from "../../../assets/loading.gif";
 import UserSocialInfo from "../../../components/UserSocialInfo";
 
