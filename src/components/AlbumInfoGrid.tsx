@@ -9,7 +9,7 @@ import {
 } from "react-icons/hi";
 import { trpc } from "../utils/trpc";
 import { NoUserModal } from "./NoUserModal";
-import AlbumPlaceholder from "../assets/AlbumPlaceholder.jpg";
+import AlbumPlaceholder from "../assets/albumPlaceholder.jpg";
 
 const AlbumInfoGrid = ({
   albumData,
@@ -76,7 +76,7 @@ const AlbumInfoGrid = ({
                 albumId: albumData?.id as string,
                 albumImage: albumData?.images[1]?.url as string,
                 userImage: session?.user?.image as string,
-                username: session?.user?.name as string, 
+                username: session?.user?.name as string,
               });
             }
           }}
