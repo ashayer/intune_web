@@ -89,7 +89,7 @@ const SearchResults: NextPage = () => {
       </div>
       <div>
         <p className="p-6 font-bold md:text-3xl">albums</p>
-        <div className="grid grid-cols-3 gap-2 px-2 md:grid-cols-4 2xl:grid-cols-6">
+        <div className="grid grid-cols-4 gap-2 px-2 md:grid-cols-6 2xl:grid-cols-10">
           {searchResults?.albums?.items &&
             searchResults?.albums?.items.map((entry, index) => (
               <SearchResultCard key={index} entry={entry} type="album" />

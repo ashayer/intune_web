@@ -75,11 +75,21 @@ const UserDetails: NextPage = () => {
         </div>
         <div className="flex gap-x-4">
           <div className="flex flex-col text-center">
-            <p className="font-bold text-slate-400">Following</p>
+            <a
+              className="cursor-pointer font-bold text-slate-400 hover:text-blue-500"
+              onClick={() => Router.push(`/user/following/${userId}`)}
+            >
+              Following
+            </a>
             <p>{followInfo.data?.userIsFollowingCount}</p>
           </div>
           <div className="flex flex-col text-center">
-            <p className="font-bold text-slate-400">Followers</p>
+            <a
+              className="cursor-pointer font-bold text-slate-400 hover:text-blue-500"
+              onClick={() => Router.push(`/user/followers/${userId}`)}
+            >
+              Followers
+            </a>
             <p>{followInfo.data?.userFollowersCount}</p>
           </div>
         </div>

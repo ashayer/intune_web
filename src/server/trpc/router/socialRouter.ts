@@ -177,4 +177,57 @@ export const socialRouter = router({
         userIsFollowingCount,
       };
     }),
+  getFollowersList: publicProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+        skip: z.number().nullish(),
+      })
+    )
+    .query(async ({ input, ctx }) => {
+      const followersList = await ctx.prisma.followersList.findMany({
+        where: {
+          followingUserId: input.userId,
+        },
+        select: {
+          userId: true,
+        },
+      });
+
+      return followersList;
+    }),
+  getFollowingList: publicProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+        skip: z.number().nullish(),
+      })
+    )
+    .query(async ({ input, ctx }) => {
+      const followingList = await ctx.prisma.followersList.findMany({
+        where: {
+          userId: input.userId,
+        },
+      });
+
+      return followingList;
+    }),
+  getBasicInfo: publicProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+      })
+    )
+    .query(async ({ input, ctx }) => {
+      const userInfo = await ctx.prisma.user.findFirst({
+        where: {
+          id: input.userId,
+        },
+        select: {
+          name: true,
+          image: true,
+        },
+      });
+      return userInfo;
+    }),
 });
