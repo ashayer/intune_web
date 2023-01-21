@@ -39,7 +39,7 @@ export const searchRouter = router({
       };
 
       await fetch(
-        `${SPOTIFY_URL}?q=${input.text}&type=album,artist&limit=18`,
+        `${SPOTIFY_URL}?q=${input.text}&type=album,artist&limit=50`,
         apiParameters
       )
         .then((response) => response.json())

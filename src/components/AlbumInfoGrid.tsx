@@ -76,7 +76,7 @@ const AlbumInfoGrid = ({
                 albumId: albumData?.id as string,
                 albumImage: albumData?.images[1]?.url as string,
                 userImage: session?.user?.image as string,
-                username: session?.user?.name as string,
+                username: session?.user?.name as string, 
               });
             }
           }}

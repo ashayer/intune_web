@@ -32,17 +32,19 @@ const SearchResults: NextPage = () => {
 
         console.log(topAlbumResult?.name, topArtistResult?.name);
 
-        if (
-          topArtistResult?.name.toLowerCase().includes(searchText as string)
-        ) {
-          setTopResult(topArtistResult);
-        } else if (
-          topArtistResult?.name.toLowerCase().includes(searchText as string)
-        ) {
-          setTopResult(topAlbumResult);
-        } else {
-          setTopResult(topAlbumResult);
-        }
+        // if (
+        //   topArtistResult?.name.toLowerCase().includes(searchText as string)
+        // ) {
+        //   setTopResult(topArtistResult);
+        // } else if (
+        //   topArtistResult?.name.toLowerCase().includes(searchText as string)
+        // ) {
+        //   setTopResult(topAlbumResult);
+        // } else {
+        //   setTopResult(topAlbumResult);
+        // }
+
+        setTopResult(topAlbumResult);
       },
     }
   );
@@ -94,7 +96,7 @@ const SearchResults: NextPage = () => {
             ))}
         </div>
       </div>
-      <div>
+      {/* <div>
         <p className="p-6 font-bold md:text-3xl">artists</p>
         <div className="grid grid-cols-3 gap-2 px-2 md:grid-cols-4 2xl:grid-cols-6">
           {searchResults?.artists?.items &&
@@ -102,7 +104,7 @@ const SearchResults: NextPage = () => {
               <SearchResultCard key={index} entry={entry} type="artist" />
             ))}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
