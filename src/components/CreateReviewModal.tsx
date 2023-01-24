@@ -11,6 +11,7 @@ const CreateReviewModal = ({
   albumImage,
   albumName,
   albumReviewsQuery,
+  setCreateOrUpdateOuter,
 }: {
   reviewModal: boolean;
   setReviewModal: Dispatch<SetStateAction<boolean>>;
@@ -18,6 +19,7 @@ const CreateReviewModal = ({
   albumImage: string;
   albumName: string;
   albumReviewsQuery: any;
+  setCreateOrUpdateOuter: Dispatch<SetStateAction<string>>;
 }) => {
   const [reviewText, setReviewText] = useState("");
 
@@ -51,21 +53,24 @@ const CreateReviewModal = ({
     {
       enabled: status === "authenticated",
       onSuccess: (data) => {
-        if (data) {
+        if (data !== null) {
           setCreateOrUpdate("update");
           setReviewText(data.text);
           setReviewCountText(data.text.length);
+        } else {
+          setCreateOrUpdate("create");
+          setCreateOrUpdateOuter("create");
         }
       },
-      refetchOnWindowFocus: false,
+      refetchOnWindowFocus: true,
     }
   );
 
   const deleteReview = trpc.review.deleteReview.useMutation({
     onSuccess: () => {
+      setReviewModal(false);
       albumReviewsQuery.refetch();
       getYourAlbumReviewQuery.refetch();
-      setReviewModal(false);
     },
   });
 

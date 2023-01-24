@@ -153,6 +153,7 @@ const AlbumDetails: NextPage = () => {
                   albumImage={albumData?.images[1]?.url as string}
                   albumName={albumData?.name as string}
                   albumReviewsQuery={albumReviewsQuery}
+                  setCreateOrUpdateOuter={setCreateOrUpdate}
                 />
                 <div className="mx-auto mt-10 flex w-full flex-col items-end justify-end gap-y-4 md:flex-row">
                   <div className="flex gap-x-4">
