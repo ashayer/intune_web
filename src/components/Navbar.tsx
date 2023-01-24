@@ -29,9 +29,9 @@ const Navbar = () => {
       <button className="pl-2" onClick={() => Router.replace("/")}>
         <HiHome className="h-6 w-6" />
       </button>
-      <button className="no-animation hidden items-center gap-x-1 font-extrabold md:flex">
-        <BsSoundwave /> INTUNE
-      </button>
+      <span className="no-animation hidden items-center gap-x-1 font-extrabold md:flex">
+        <BsSoundwave /> Intune
+      </span>
       <div className="flex items-center justify-between gap-x-2 ">
         <div className="flex items-center justify-between gap-x-2 ">
           {showSearch && (
