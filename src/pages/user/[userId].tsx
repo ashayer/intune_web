@@ -26,14 +26,20 @@ const UserDetails: NextPage = () => {
   const { userId } = nrouter.query;
   const [skip, setSkip] = useState(0);
 
-  const userInfo = trpc.social.getUserInfo.useQuery({
-    userId: userId as string,
-    skip: skip,
-  });
+  const userInfo = trpc.social.getUserInfo.useQuery(
+    {
+      userId: userId as string,
+      skip: skip,
+    },
+    { enabled: userId !== undefined }
+  );
 
-  const followInfo = trpc.social.getFollowInfo.useQuery({
-    userId: userId as string,
-  });
+  const followInfo = trpc.social.getFollowInfo.useQuery(
+    {
+      userId: userId as string,
+    },
+    { enabled: userId !== undefined }
+  );
 
   const checkIfFollow = trpc.social.checkUserFollow.useQuery(
     {
@@ -42,6 +48,7 @@ const UserDetails: NextPage = () => {
     },
     {
       onSuccess: (data) => setIsFollowing(data),
+      enabled: status === "authenticated" && userId !== undefined,
     }
   );
 
