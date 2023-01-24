@@ -21,7 +21,7 @@
     "@types/spotify-api": "^0.0.19",
     "daisyui": "^2.46.1",
     "next": "13.1.1",
-    "next-auth": "^4.18.3",
+    "next-auth": "^4.18.9",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.41.5",

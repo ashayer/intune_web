@@ -72,40 +72,50 @@ const Navbar = () => {
             </button>
           </form>
         </div>
-        {status === "unauthenticated" ? (
-          <button className="btn-sm btn" onClick={() => signIn()}>
-            Log in
-          </button>
-        ) : (
-          <div className="dropdown-end dropdown">
-            <div className="avatar">
-              <button className="m-2 rounded-full ">
-                <Image
-                  src={session?.user?.image as string}
-                  alt="user"
-                  height={25}
-                  width={25}
-                  className="rounded-full "
-                />
-              </button>
-            </div>
-            <ul
-              tabIndex={0}
-              className="dropdown-content menu rounded-box mt-4 w-52 bg-base-100 p-2 shadow"
-            >
-              <li>
-                <button
-                  onClick={() => Router.push(`/user/${session?.user?.id}`)}
-                >
-                  Profile
+        <div>
+          {status === "loading" ? (
+            <></>
+          ) : (
+            <>
+              {status === "unauthenticated" ? (
+                <button className="btn-sm btn" onClick={() => signIn()}>
+                  Log in
                 </button>
-              </li>
-              <li>
-                <button onClick={() => signOut()}>Sign out</button>
-              </li>
-            </ul>
-          </div>
-        )}
+              ) : (
+                <div className="dropdown-end dropdown">
+                  <div className="avatar">
+                    <button className="m-2 rounded-full ">
+                      <Image
+                        src={session?.user?.image as string}
+                        alt="user"
+                        height={25}
+                        width={25}
+                        className="rounded-full "
+                      />
+                    </button>
+                  </div>
+                  <ul
+                    tabIndex={0}
+                    className="dropdown-content menu rounded-box mt-4 w-52 bg-base-100 p-2 shadow"
+                  >
+                    <li>
+                      <button
+                        onClick={() =>
+                          Router.push(`/user/${session?.user?.id}`)
+                        }
+                      >
+                        Profile
+                      </button>
+                    </li>
+                    <li>
+                      <button onClick={() => signOut()}>Sign out</button>
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </>
+          )}
+        </div>
       </div>
     </nav>
   );
