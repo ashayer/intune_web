@@ -18,7 +18,7 @@ const TracklistGrid = ({
     >
       <button
         onClick={() => setShowTrackList((prev) => !prev)}
-        className="flex w-32 items-center justify-center place-self-center"
+        className="my-5 flex w-32 items-center justify-center place-self-center"
       >
         {showTrackList ? (
           <>

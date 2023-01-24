@@ -111,7 +111,7 @@ const AlbumDetails: NextPage = () => {
         }}
       >
         <main className="flex flex-col px-4 md:flex-row">
-          <div className="h-100 min-h-screen flex-[0.25]">
+          <div className="h-100 flex-[0.25] md:min-h-screen">
             {albumInfoQuery.isLoading && !albumInfoQuery.isSuccess ? (
               <div className="flex h-screen items-center justify-center">
                 <div className="h-24 w-24 animate-pulse">

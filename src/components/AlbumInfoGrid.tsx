@@ -56,7 +56,7 @@ const AlbumInfoGrid = ({
   return (
     <>
       <NoUserModal showModal={showModal} setShowModal={setShowModal} />
-      <div className="sticky top-10 flex flex-col items-center gap-y-4 text-center">
+      <div className="top-10 flex flex-col items-center gap-y-4 text-center md:sticky">
         <p className="my-4 border-b border-zinc-700 pb-4 text-center font-bold">
           {albumData?.name}
         </p>
