@@ -52,12 +52,13 @@ const AlbumInfoGrid = ({
     }
   );
 
-  console.log(albumData);
-
   return (
     <>
       <NoUserModal showModal={showModal} setShowModal={setShowModal} />
       <div className="sticky top-10 flex flex-col items-center gap-y-4 text-center">
+        <p className="my-4 border-b border-zinc-700 pb-4 text-center font-bold">
+          {albumData?.name}
+        </p>
         <Image
           src={albumData?.images[0]?.url || AlbumPlaceholder}
           alt="album cover"
