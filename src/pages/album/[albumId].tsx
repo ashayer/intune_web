@@ -39,13 +39,13 @@ const AlbumDetails: NextPage = () => {
       albumId: albumId as string,
     },
     {
-      enabled: status === "authenticated",
       onSuccess: (data) => {
         if (data) {
           setCreateOrUpdate("update");
         }
       },
       refetchOnWindowFocus: false,
+      enabled: status === "authenticated" && albumId !== undefined,
     }
   );
 
@@ -67,6 +67,7 @@ const AlbumDetails: NextPage = () => {
         }
       },
       refetchOnWindowFocus: false,
+      enabled: albumId !== undefined,
     }
   );
 
@@ -77,6 +78,7 @@ const AlbumDetails: NextPage = () => {
     {
       onSuccess: (data) => setTracklistInfo(data),
       refetchOnWindowFocus: false,
+      enabled: albumId !== undefined,
     }
   );
 
@@ -88,6 +90,7 @@ const AlbumDetails: NextPage = () => {
     },
     {
       refetchOnWindowFocus: false,
+      enabled: albumId !== undefined,
     }
   );
 

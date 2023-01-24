@@ -49,6 +49,7 @@ const AlbumInfoGrid = ({
     },
     {
       refetchOnWindowFocus: false,
+      enabled: albumId !== undefined,
     }
   );
 
@@ -65,6 +66,7 @@ const AlbumInfoGrid = ({
           className="rounded-xl"
           height={240}
           width={240}
+          priority
         />
 
         <button
