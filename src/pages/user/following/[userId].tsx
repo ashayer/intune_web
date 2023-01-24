@@ -18,13 +18,19 @@ import UserSocialInfo from "../../../components/UserSocialInfo";
 const UserDetails: NextPage = () => {
   const nrouter = useRouter();
   const { userId } = nrouter.query;
-  const getBasicInfo = trpc.social.getBasicInfo.useQuery({
-    userId: userId as string,
-  });
+  const getBasicInfo = trpc.social.getBasicInfo.useQuery(
+    {
+      userId: userId as string,
+    },
+    { enabled: userId !== undefined }
+  );
 
-  const followingList = trpc.social.getFollowingList.useQuery({
-    userId: userId as string,
-  });
+  const followingList = trpc.social.getFollowingList.useQuery(
+    {
+      userId: userId as string,
+    },
+    { enabled: userId !== undefined }
+  );
 
   return getBasicInfo.isLoading && !getBasicInfo.isSuccess ? (
     <div className="flex h-screen items-center justify-center">

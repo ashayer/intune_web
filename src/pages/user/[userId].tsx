@@ -17,8 +17,6 @@ import loadingGif from "../../assets/loading.gif";
 const UserDetails: NextPage = () => {
   const { data: session, status } = useSession();
 
-  const [bgColor, setBgColor] = useState("");
-
   const nrouter = useRouter();
 
   const [isFollowing, setIsFollowing] = useState(false);
