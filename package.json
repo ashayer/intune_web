@@ -30,6 +30,7 @@
     "zod": "^3.18.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.30.0",
     "@types/node": "^18.0.0",
     "@types/prettier": "^2.7.2",
     "@types/react": "^18.0.14",
